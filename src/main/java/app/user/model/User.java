@@ -30,10 +30,12 @@ public class User {
     private String password;
 
     @Column(nullable = false)
+    private UserRole role;
+
+    @Column(nullable = false)
     private LocalDateTime createdOn;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
     private boolean isActive;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
