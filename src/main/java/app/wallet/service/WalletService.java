@@ -26,6 +26,7 @@ public class WalletService {
     public Wallet createDefaultWallet(User user) {
 
         Wallet wallet = initializeWallet(user);
+        walletRepository.save(wallet);
 
         log.info("Wallet it id [%s] successfully create for user with username [%s] and id [%s]".formatted(wallet.getId(), user.getUsername(), user.getId()));
         return wallet;
