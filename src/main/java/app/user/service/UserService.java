@@ -6,11 +6,13 @@ import app.user.repository.UserRepository;
 import app.wallet.model.Wallet;
 import app.wallet.repository.WalletRepository;
 import app.wallet.service.WalletService;
+import app.web.dto.EditRequest;
 import app.web.dto.RegisterRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,6 +36,7 @@ public class UserService {
         this.walletService = walletService;
     }
 
+    @Transactional
     public User register(RegisterRequest registerRequest) {
 
         Optional<User> optionalUser = userRepository.findByUsername(registerRequest.getUsername());
@@ -42,12 +45,28 @@ public class UserService {
             log.info("User with username [%s] already exist.".formatted(registerRequest.getUsername()));
         }
 
-        User user = userRepository.save(initializeUser(registerRequest));
+        User user = initializeUser(registerRequest);
         Wallet wallet = walletService.createDefaultWallet(user);
 
         user.setWallets(List.of(wallet));
         userRepository.save(user);
         log.info("User with id [%s] and username [%s] created successfully".formatted(user.getId(), user.getUsername()));
+        return user;
+    }
+
+    public User editUser (UUID id, EditRequest editRequest) {
+
+        User user = userRepository.findById(id).orElseThrow();
+
+        user.setFirstName(editRequest.getFirstName());
+        user.setLastName(editRequest.getLastName());
+        user.setEmail(editRequest.getEmail());
+        user.setProfilePic(editRequest.getProfilePic());
+        user.setUpdatedOn(LocalDateTime.now());
+
+        userRepository.save(user);
+        log.info("User with id [%s] and username [%s] successfully updated".formatted(user.getId(), user.getUsername()));
+
         return user;
     }
 
@@ -59,6 +78,7 @@ public class UserService {
                 .role(UserRole.USER)
                 .isActive(true)
                 .createdOn(LocalDateTime.now())
+                .updatedOn(LocalDateTime.now())
                 .build();
     }
 
