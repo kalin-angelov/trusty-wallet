@@ -33,11 +33,18 @@ public class User {
 
     private String email;
 
+    private String firstName;
+
+    private String lastName;
+
     @Column(nullable = false)
     private UserRole role;
 
     @Column(nullable = false)
     private LocalDateTime createdOn;
+
+    @Column(nullable = false)
+    private LocalDateTime updatedOn;
 
     @Column(nullable = false)
     private boolean isActive;
