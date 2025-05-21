@@ -17,10 +17,10 @@ import java.util.UUID;
 public class TransferRequest {
 
     @NotNull
-    private UUID from;
+    private UUID sender;
 
     @NotNull
-    private String to;
+    private String receiver;
 
     @NotNull
     @Positive
