@@ -1,8 +1,10 @@
 package app.web;
 
+import app.transaction.model.Transaction;
 import app.user.model.User;
 import app.user.model.UserPrinciple;
 import app.user.service.UserService;
+import app.wallet.service.WalletService;
 import app.web.dto.TransferRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +21,12 @@ import org.springframework.web.servlet.ModelAndView;
 public class TransferController {
 
     private final UserService userService;
+    private final WalletService walletService;
 
     @Autowired
-    public TransferController(UserService userService) {
+    public TransferController(UserService userService, WalletService walletService) {
         this.userService = userService;
+        this.walletService = walletService;
     }
 
     @GetMapping
@@ -38,13 +42,12 @@ public class TransferController {
     }
 
     @PostMapping
-    public ModelAndView send(@Valid TransferRequest transferRequest, BindingResult bindingResult) {
+    public ModelAndView createTransfer(@Valid TransferRequest transferRequest, BindingResult bindingResult, @AuthenticationPrincipal UserPrinciple userPrinciple) {
 
-        if (bindingResult.hasGlobalErrors()) {
-            return new ModelAndView("transfer");
-        }
+        User user = userService.getUserById(userPrinciple.getUser().getId());
+        Transaction transaction = walletService.makeTransfer(user, transferRequest);
 
-        return null;
+        return new ModelAndView("redirect:transactions/" + transaction.getId());
     }
 
 }
