@@ -6,9 +6,6 @@ import app.transaction.model.TransactionType;
 import app.transaction.repository.TransactionRepository;
 import app.user.model.User;
 import app.wallet.model.Wallet;
-import app.wallet.model.WalletStatus;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,7 +45,7 @@ public class TransactionService {
         return transactionRepository.findByIdAndOwnerId(id, ownerId).orElseThrow();
     }
 
-    public Transaction createTransactionForChargingOwnWallet(User owner, String sender, String receiver, BigDecimal amount, BigDecimal balanceLeft, TransactionType type, String description, TransactionStatus status, String failureReason) {
+    public Transaction initializeTransaction(User owner, String sender, String receiver, BigDecimal amount, BigDecimal balanceLeft, TransactionType type, String description, TransactionStatus status, String failureReason) {
 
         Transaction transaction = Transaction.builder()
                 .owner(owner)
