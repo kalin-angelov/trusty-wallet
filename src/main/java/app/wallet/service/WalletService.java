@@ -9,7 +9,7 @@ import app.wallet.model.Wallet;
 import app.wallet.model.WalletStatus;
 import app.wallet.model.WalletType;
 import app.wallet.repository.WalletRepository;
-import app.web.dto.ChargeOwnWalletRequest;
+import app.web.dto.TransferRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,10 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -86,39 +83,85 @@ public class WalletService {
     }
 
     @Transactional
-    public Transaction chargeUpWallet(UUID id, ChargeOwnWalletRequest chargeOwnWalletRequest) {
+    public Transaction chargeUpWallet(User owner, UUID walletId, BigDecimal amount) {
 
-        Wallet wallet = walletRepository.findById(id).orElseThrow();
-        String descriptionOfTransaction = "Charging wallet - [%.2f]".formatted(chargeOwnWalletRequest.getAmount().doubleValue());
+        Wallet wallet = walletRepository.findByIdAndOwnerId(walletId, owner.getId()).orElseThrow();
+        String description = "Charging wallet - %.2f EUR".formatted(amount.doubleValue());
 
-        if (wallet.getStatus() == WalletStatus.INACTIVE) {
-            return transactionService.createTransactionForChargingOwnWallet(
-                    wallet.getOwner(),
-                    SENDER,
-                    wallet.getOwner().getUsername(),
-                    chargeOwnWalletRequest.getAmount(),
-                    wallet.getBalance(),
-                    TransactionType.DEPOSIT,
-                    descriptionOfTransaction,
-                    TransactionStatus.FAILED,
-                    "Wallet is invalid"
-
-            );
-        }
-
-        wallet.setBalance(wallet.getBalance().add(chargeOwnWalletRequest.getAmount()));
+        wallet.setBalance(wallet.getBalance().add(amount));
+        wallet.setUpdatedOn(LocalDateTime.now());
         walletRepository.save(wallet);
 
-        return transactionService.createTransactionForChargingOwnWallet(
+        return transactionService.initializeTransaction(
                 wallet.getOwner(),
                 SENDER,
                 wallet.getOwner().getUsername(),
-                chargeOwnWalletRequest.getAmount(),
+                amount,
                 wallet.getBalance(),
+                TransactionType.DEPOSIT,
+                description,
+                TransactionStatus.SUCCEEDED,
+                null
+        );
+    }
+
+    @Transactional
+    public Transaction makeTransfer(User user,TransferRequest transferRequest) {
+
+        Wallet senderWallet = walletRepository.findByIdAndOwnerId(transferRequest.getSender(), user.getId()).orElseThrow();
+        Optional<Wallet> optionalReceiverWallet = walletRepository.findAllByOwnerUsername(transferRequest.getReceiver())
+                .stream()
+                .filter(wallet -> wallet.getStatus() == WalletStatus.ACTIVE)
+                .findFirst();
+        String descriptionOfTransaction = "Transfer From: %s To: %s".formatted(senderWallet.getOwner().getUsername(), transferRequest.getReceiver());
+        boolean walletCanHandleTransaction = chargeWallet(senderWallet, transferRequest.getAmount());
+
+        if (optionalReceiverWallet.isEmpty() || !walletCanHandleTransaction) {
+            return transactionService.initializeTransaction(
+                    senderWallet.getOwner(),
+                    transferRequest.getReceiver(),
+                    senderWallet.getOwner().getUsername(),
+                    transferRequest.getAmount(),
+                    senderWallet.getBalance(),
+                    TransactionType.DEPOSIT,
+                    descriptionOfTransaction,
+                    TransactionStatus.FAILED,
+                    "Invalid criteria for transaction"
+            );
+        }
+
+        Wallet receiverWallet = optionalReceiverWallet.get();
+        receiverWallet.setBalance(receiverWallet.getBalance().add(transferRequest.getAmount()));
+        receiverWallet.setUpdatedOn(LocalDateTime.now());
+        walletRepository.save(receiverWallet);
+
+        senderWallet.setBalance(senderWallet.getBalance().subtract(transferRequest.getAmount()));
+        senderWallet.setUpdatedOn(LocalDateTime.now());
+        walletRepository.save(senderWallet);
+
+        return transactionService.initializeTransaction(
+                senderWallet.getOwner(),
+                SENDER,
+                senderWallet.getOwner().getUsername(),
+                transferRequest.getAmount(),
+                senderWallet.getBalance(),
                 TransactionType.DEPOSIT,
                 descriptionOfTransaction,
                 TransactionStatus.SUCCEEDED,
                 null
         );
+    }
+
+    public boolean chargeWallet (Wallet wallet, BigDecimal amount) {
+
+        boolean canHandleTransaction = true;
+
+        if (wallet.getStatus() == WalletStatus.INACTIVE || wallet.getBalance().compareTo(amount) < 0) {
+            canHandleTransaction = false;
+            return canHandleTransaction;
+        }
+
+        return canHandleTransaction;
+
     }
 }
