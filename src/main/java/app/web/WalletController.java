@@ -60,9 +60,10 @@ public class WalletController {
     }
 
     @PutMapping("/{id}/charge")
-    public ModelAndView chargeWallet(@PathVariable UUID id ,@Valid ChargeOwnWalletRequest chargeOwnWalletRequest, BindingResult bindingResult) {
+    public ModelAndView chargeWalletUp(@PathVariable UUID id ,@Valid ChargeOwnWalletRequest chargeOwnWalletRequest, BindingResult bindingResult, @AuthenticationPrincipal UserPrinciple userPrinciple) {
 
-        Transaction transaction = walletService.chargeUpWallet(id, chargeOwnWalletRequest);
+        User user = userService.getUserById(userPrinciple.getUser().getId());
+        Transaction transaction = walletService.chargeUpWallet(user, id, chargeOwnWalletRequest.getAmount());
 
         return new ModelAndView("redirect:/transactions/" + transaction.getId());
     }
