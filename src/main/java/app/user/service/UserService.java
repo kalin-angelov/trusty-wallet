@@ -1,5 +1,6 @@
 package app.user.service;
 
+import app.exception.UsernameAlreadyExistException;
 import app.user.model.User;
 import app.user.model.UserRole;
 import app.user.repository.UserRepository;
@@ -43,6 +44,7 @@ public class UserService {
 
         if (optionalUser.isPresent()) {
             log.info("User with username [%s] already exist.".formatted(registerRequest.getUsername()));
+            throw new UsernameAlreadyExistException("User with username [%s] already exist.".formatted(registerRequest.getUsername()));
         }
 
         User user = initializeUser(registerRequest);
