@@ -48,7 +48,7 @@ public class WalletService {
         return Wallet.builder()
                 .owner(user)
                 .balance(new BigDecimal(10))
-                .type(WalletType.PAYABLE)
+                .type(WalletType.DEFAULT)
                 .status(WalletStatus.ACTIVE)
                 .createdOn(LocalDateTime.now())
                 .updatedOn(LocalDateTime.now())
