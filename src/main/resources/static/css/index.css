@@ -1,0 +1,43 @@
+main {
+    min-height: 85dvh;
+}
+
+.register, .login {
+    background-color: black;
+    width: 150px;
+    text-align: center;
+}
+
+.main-header, .text-message {
+    color: white;
+}
+
+.nav-container {
+    .navbar {
+        justify-content: center;
+        gap: 20px;
+    }
+}
+
+.index-home {
+    text-align: center;
+
+    .image-container {
+        border: none;
+    }
+
+    .main-header {
+        font-size: 65px;
+        letter-spacing: 1.2px;
+        padding: 10px;
+        span {
+            font-size: 90px;
+        }
+    }
+
+    .text-message {
+        padding: 10px;
+        font-size: 30px;
+        letter-spacing: 1px;
+    }
+}

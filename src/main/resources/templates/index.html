@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/images/wallet-main-logo.png">
+  <link rel="stylesheet" type="text/css" href="/css/common.css">
+  <link rel="stylesheet" type="text/css" href="/css/index.css">
+  <title>Home</title>
+</head>
+<body>
+<header>
+  <div class="nav-container">
+    <nav class="navbar">
+      <a th:href="@{/login}" class="button login">Login</a>
+      <a th:href="@{/register}" class="button register">Register</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="index-home">
+    <a href="/" class="logo">
+      <img src="/images/wallet-main-logo.png" alt="Wallet logo" width="550px" height="550px">
+    </a>
+    <h1 class="main-header"><span>TRUSTY</span> WALLET</h1>
+    <p class="text-message">WHERE YOUR MONEY ARE SAFE</p>
+  </section>
+</main>
+
+<th:block th:insert="fragments/footer :: footer"></th:block>
+</body>
+</html>

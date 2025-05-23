@@ -1,0 +1,87 @@
+.home {
+    width: 80%;
+    display: grid;
+    grid-column-gap: 26px;
+    grid-row-gap: 26px;
+    grid-template-columns: repeat(2, 50%);
+    color: #333333;
+    margin-right: 2%;
+
+    .profile-information {
+
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+
+            .profile-image {
+                width: 160px;
+                height: 160px;
+                border-radius: 80%;
+                box-shadow: 0 0 10px 5px lightblue;
+                align-self: center;
+                justify-self: center;
+            }
+
+            .profile-name {
+                font-weight: 600;
+                font-size: 17px;
+                color: #333;
+            }
+
+            .profile-status {
+                display: flex;
+                padding: 5px 10px;
+                justify-content: center;
+                gap: 20px;
+                text-transform: uppercase;
+            }
+        }
+
+    }
+
+    .profile-wallet {
+        border: none;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: 8px;
+
+        .wallet-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            border-radius: 4px;
+            width: 100%;
+
+            p {
+                background-color: rgb(255, 255, 255);
+                border-radius: 6px;
+                color: rgb(86, 80, 141);
+                border: 1px solid rgb(86, 80, 141);
+                padding: 4px 10px;
+                font-weight: 400;
+                font-size: 12px;
+                align-self: center;
+                display: inline-block;
+            }
+        }
+
+        .wallet-details {
+            flex-direction: column;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 10px;
+            font-size: 12px;
+            color: #666;
+            margin-top: 10px;
+        }
+    }
+}
