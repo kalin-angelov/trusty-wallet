@@ -1,0 +1,89 @@
+main {
+    min-height: 85dvh;
+}
+
+.nav-container {
+    .navbar {
+        justify-content: space-between;
+
+        .home {
+            text-align: center;
+            width: 100px;
+            background-color: black;
+        }
+    }
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    background-color: rgba(0, 0, 0, 0.678);
+    box-shadow: 10px 10px 5px black;
+    border: 2px solid white;
+    border-radius: 15px;
+    width: 550px;
+    height: 550px;
+    padding: 15px;
+
+    h3 {
+        font-size: 30px;
+        letter-spacing: 1px;
+        font-weight: 300;
+        padding: 10px;
+    }
+
+    fieldset {
+        border: none;
+        width: 385px;
+        height: 100px;
+        padding: 10px;
+
+        label {
+            font-size: 18px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .formInput {
+            padding-top: 5px;
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+
+            i {
+                color: black;
+                background-color: white;
+                padding: 10px;
+                font-size: 18px;
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+            }
+
+            input {
+                width: 100%;
+                color: black;
+            }
+        }
+    }
+
+    .form-btn {
+        font-size: 20px;
+        background-color: rgb(37, 35, 63);
+        border-radius: 10px;
+        margin: 12px auto;
+        width: 368px;
+        height: 45px;
+    }
+    p {
+        font-size: 12px;
+        text-align: center;
+
+        a {
+            color: rgb(73, 197, 35);
+        }
+    }
+}
