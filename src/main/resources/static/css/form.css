@@ -1,5 +1,6 @@
 main {
     min-height: 85dvh;
+    color: white;
 }
 
 .nav-container {
@@ -77,6 +78,7 @@ main {
         margin: 12px auto;
         width: 368px;
         height: 45px;
+        color: white;
     }
     p {
         font-size: 12px;
