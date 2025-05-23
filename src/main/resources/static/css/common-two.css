@@ -1,0 +1,78 @@
+@import url("https://use.fontawesome.com/releases/v6.4.0/css/all.css");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: white;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+body {
+    max-width: 100%;
+    font-family: "Bellefair", serif;
+    font-weight: 400;
+    font-style: normal;
+
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+
+    background-image: radial-gradient(hsl(226, 93%, 12%), hsl(240, 4%, 31%));
+}
+
+main {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.button {
+    text-transform: uppercase;
+    cursor: pointer;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.button:hover {
+    box-shadow: 1px 2px 5px lightblue;
+}
+
+.footer {
+     color: rgba(255, 255, 255, 0.69);
+      text-align: center;
+      margin-top: auto;
+      font-weight: 300;
+      letter-spacing: 0.5px;
+}
+
+.nav-container {
+    padding: 15px;
+
+    border-bottom: 1px solid white;
+    box-shadow: 0px 5px 5px lightblue;
+
+    .navbar {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.alarm-alert {
+    margin: 10px;
+    font-weight: 300;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    background: linear-gradient(to left, #f88e8e, #f56767, #f53b3b);
+    background-size: 200%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
