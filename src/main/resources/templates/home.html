@@ -7,11 +7,12 @@
   <link rel="stylesheet" type="text/css" href="/css/common.css">
   <link rel="stylesheet" type="text/css" href="/css/home.css">
   <link rel="stylesheet" type="text/css" href="/css/home-common.css">
+  <link rel="stylesheet" type="text/css" href="/css/nav-side-bar.css">
   <title>Home</title>
 </head>
 <body>
-<th:block th:insert="fragments/navbar :: navbar"></th:block>
 <main>
+  <th:block th:insert="fragments/navbar :: navbar"></th:block>
   <div class="home">
     <div class="profile-information container">
       <div class="profile-header">
@@ -47,7 +48,7 @@
 
     <div class="profile-wallet container">
       <div class="wallet-info">
-        <p>Standard Wallet</p>
+        <p class="wallet-type">Standard Wallet</p>
         <p th:text="${user.wallets[0].status}" th:classappend="${user.wallets[0].status.name() == 'ACTIVE' ? 'status active' : 'status inactive'}"></p>
       </div>
       <div class="wallet-balance">
