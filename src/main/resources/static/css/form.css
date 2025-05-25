@@ -10,7 +10,7 @@ main {
         .home {
             text-align: center;
             width: 100px;
-            background-color: black;
+            background: radial-gradient(circle,rgba(110, 110, 110, 1) 0%, rgba(0, 0, 0, 1) 100%);
         }
     }
 }
@@ -22,8 +22,8 @@ main {
     justify-content: center;
     gap: 10px;
 
-    background-color: rgba(0, 0, 0, 0.678);
-    box-shadow: 10px 10px 5px black;
+    background: radial-gradient(circle,rgba(110, 110, 110, 1) 0%, rgba(0, 0, 0, 1) 100%);
+    box-shadow: 5px 5px 10px white;
     border: 2px solid white;
     border-radius: 15px;
     width: 550px;
@@ -73,7 +73,7 @@ main {
 
     .form-btn {
         font-size: 20px;
-        background-color: rgb(37, 35, 63);
+        background-color: rgb(8 184 149);
         border-radius: 10px;
         margin: 12px auto;
         width: 368px;
