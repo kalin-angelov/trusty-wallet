@@ -23,7 +23,7 @@
     margin-top: 10px;
     text-align: center;
     width: 150px;
-    background-color: rgb(32, 32, 32);
+    background: radial-gradient(circle,rgba(110, 110, 110, 1) 0%, rgba(0, 0, 0, 1) 100%);
 }
 
 .status {
