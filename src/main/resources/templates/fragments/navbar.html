@@ -9,11 +9,8 @@
     <div class="side-bar-container">
         <nav>
             <div class="side_navbar">
-                <div class="smart-wallet-nav-bar">
-                    <div class="smart-wallet-nav-bar-name">Trusty Wallet</div>
-                    <div class="smart-wallet-nav-bar-version">v1.0.0</div>
-                </div>
-                <div class="func-block">
+                <div class="name">Trusty Wallet</div>
+                <div class="block">
                     <a href="/home" class="active">
                         <p>Dashboard</p>
                         <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -21,7 +18,7 @@
                         </svg>
                     </a>
                 </div>
-                <div class="func-block">
+                <div class="block">
                     <span>Quick Link</span>
                     <a href="/transfers">
                         <p>Transfers</p>
@@ -43,7 +40,7 @@
                         </svg>
                     </a>
                 </div>
-                <div class="func-block">
+                <div class="block">
                     <span>Utility</span>
                     <a href="/notifications">
                         <p>Notifications</p>
@@ -51,7 +48,7 @@
                         </svg>
                     </a>
                 </div>
-                <div class="func-block admin-func-block" th:if="${user.role.name() == 'ADMIN'}">
+                <div class="block" th:if="${user.role.name() == 'ADMIN'}">
                     <span>Admin</span>
                     <a href="/users">
                         <p>Users</p>
@@ -66,7 +63,7 @@
                         </svg>
                     </a>
                 </div>
-                <div class="func-block">
+                <div class="block">
                     <a class="logout" href="/logout">
                         <p>Logout</p>
                         <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
