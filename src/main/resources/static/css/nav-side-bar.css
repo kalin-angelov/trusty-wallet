@@ -3,13 +3,13 @@
 }
 
 .side-bar-container {
-  background-color: #ffffff;
+  background: #d4d4d491;
   width: 240px;
   height: 100%;
   border-radius: 12px;
+  padding: 55px;
   padding-inline: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
-  font-family: 'Poppins', sans-serif;
+  box-shadow: 5px 5px 10px black;
 
   nav {
     width: 100%;
@@ -41,7 +41,8 @@
 
   a {
     display: flex;
-    text-decoration: none;
+    text-decoration: row;
+    justify-content: space-between;
     font-weight: 300;
     font-size: 14px;
     color: #333333;
@@ -49,6 +50,7 @@
     border-radius: 8px;
     margin-bottom: 8px;
     background: transparent;
+
   }
 
   a:hover {
@@ -58,12 +60,20 @@
     font-weight: 300;
     transition: background 0.9s ease-in-out;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    p,i {
+        color: white;
+    }
   }
 
  a.active {
    background: radial-gradient(circle,rgba(110, 110, 110, 1) 0%, rgba(0, 0, 0, 1) 100%);
    color: white;
    font-weight: 300;
+
+    p,i {
+        color: white;
+    }
  }
 
   p {
@@ -72,10 +82,8 @@
     display: inline-block;
   }
 
-  svg {
-    margin-left: auto;
-    margin-right: 4%;
-    width: 18px;
+  i {
+    font-size: 18px;
   }
 
   .logout {

@@ -4,10 +4,10 @@
     align-items: center;
     justify-content: center;
 
-    background: #ffffff;
+    background: #d4d4d491;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px lightblue;
+    box-shadow: 0 4px 8px black;
     border: 1px solid transparent;
 }
 
