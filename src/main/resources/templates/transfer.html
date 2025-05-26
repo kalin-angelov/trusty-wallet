@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/wallet-main-logo.png">
+    <link rel="stylesheet" type="text/css" href="/css/common.css">
+    <link rel="stylesheet" type="text/css" href="/css/form.css">
+    <link rel="stylesheet" type="text/css" href="/css/transfer.css">
+    <link rel="stylesheet" type="text/css" href="/css/nav-side-bar.css">
+    <title>Transfer</title>
+</head>
+<body>
+<main>
+
+    <th:block th:insert="fragments/navbar :: navbar"></th:block>
+
+    <form class="form" th:action="@{/transfers}" th:method="POST" th:object="${transferRequest}">
+
+        <h3>Transfer Funds</h3>
+
+        <fieldset>
+            <label for="sender">Select Wallet</label>
+            <div class="formInput">
+                <i class="fa-solid fa-wallet"></i>
+                <select id="sender" name="sender" required="" th:field="*{sender}">
+                    <option value="" selected disabled="">Select your wallet</option>
+                    <option th:each="wallet : ${user.wallets}" th:value="${wallet.id}" th:text="${'Standard Wallet - ' + wallet.balance + ' EUR'}"></option>
+                </select>
+            </div>
+
+        </fieldset>
+
+        <fieldset>
+            <label for="receiver">Recipient Username</label>
+            <div class="formInput">
+                <i class="fa-solid fa-user"></i>
+                <input type="text" id="receiver" placeholder="Enter recipient's username" required="" th:field="*{receiver}" />
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <label for="amount">Amount</label>
+            <div class="formInput">
+                <i class="fa-solid fa-money-bill"></i>
+                <input type="number" id="amount" placeholder="Enter amount to send" min="1" step="0.01" required="" th:field="*{amount}">
+            </div>
+        </fieldset>
+
+        <button class="button form-btn">Send</button>
+
+    </form>
+</main>
+<th:block th:insert="fragments/footer :: footer"></th:block>
+</body>
+</html>
