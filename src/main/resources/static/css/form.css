@@ -4,15 +4,7 @@ main {
 }
 
 .nav-container {
-    .navbar {
-        justify-content: space-between;
-
-        .home {
-            text-align: center;
-            width: 100px;
-            background: radial-gradient(circle,rgba(110, 110, 110, 1) 0%, rgba(0, 0, 0, 1) 100%);
-        }
-    }
+    padding: 15px;
 }
 
 .form {
@@ -22,13 +14,10 @@ main {
     justify-content: center;
     gap: 10px;
 
-    background: radial-gradient(circle,rgba(110, 110, 110, 1) 0%, rgba(0, 0, 0, 1) 100%);
-    box-shadow: 5px 5px 10px white;
-    border: 2px solid white;
+    background: #d4d4d491;
+    box-shadow: 5px 5px 10px black;
     border-radius: 15px;
-    width: 550px;
-    height: 550px;
-    padding: 15px;
+    padding: 50px;
 
     h3 {
         font-size: 30px;
@@ -64,7 +53,7 @@ main {
                 border-bottom-left-radius: 10px;
             }
 
-            input {
+            input, select {
                 width: 100%;
                 color: black;
             }
