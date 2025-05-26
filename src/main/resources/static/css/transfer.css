@@ -1,0 +1,6 @@
+main {
+    min-height: 95dvh;
+    flex-direction: row;
+    gap: 20px;
+    margin: 0 15px;
+}
