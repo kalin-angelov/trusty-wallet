@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/images/wallet-main-logo.png">
+    <link rel="stylesheet" type="text/css" href="/css/common.css">
+  <link rel="stylesheet" type="text/css" href="/css/profile.css">
+    <link rel="stylesheet" type="text/css" href="/css/form.css">
+    <link rel="stylesheet" type="text/css" href="/css/home-common.css">
+    <link rel="stylesheet" type="text/css" href="/css/nav-side-bar.css">
+    <title>Profile</title>
+</head>
+<body>
+  <th:block th:insert="fragments/header :: header"></th:block>
+  <main>
+    <th:block th:insert="fragments/navbar :: navbar"></th:block>
+
+    <form class="form" th:action="@{'/users/' + ${user.id} + '/profile'}" th:method="PUT" th:object="${editRequest}">
+
+      <fieldset>
+        <label for="firstName">First Name</label>
+        <div class="formInput">
+          <i class="fa-solid fa-user-plus"></i>
+          <input type="text" id="firstName" placeholder="First Name" th:field="*{firstName}">
+        </div>
+        <p class="alarm-alert" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></p>
+      </fieldset>
+
+      <fieldset>
+        <label for="lastName">Last Name</label>
+        <div class="formInput">
+          <i class="fa-solid fa-user-plus"></i>
+          <input type="text" id="lastName" placeholder="Last Name" th:field="*{lastName}">
+        </div>
+        <p class="alarm-alert" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></p>
+      </fieldset>
+
+      <fieldset>
+        <label for="email">Email</label>
+        <div class="formInput">
+          <i class="fa-solid fa-at"></i>
+          <input type="text" id="email" placeholder="Email Address" th:field="*{email}">
+        </div>
+        <p class="alarm-alert" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+      </fieldset>
+
+      <fieldset>
+        <label for="profilePic">Picture URL</label>
+        <div class="formInput">
+          <i class="fa-solid fa-image"></i>
+          <input type="text" id="profilePic" placeholder="Image Link" th:field="*{profilePic}">
+        </div>
+        <p class="alarm-alert" th:if="${#fields.hasErrors('profilePic')}" th:errors="*{profilePic}"></p>
+      </fieldset>
+
+      <button class="button form-btn">
+        <p>Send</p>
+        <i class="fa-solid fa-paper-plane"></i>
+      </button>
+    </form>
+
+    <div class="profile-information container">
+      <div class="profile-info">
+        <img class="profile-image" th:src="${#strings.isEmpty(user.profilePic) ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : user.profilePic}" alt="Profile avatar">
+        <h2 class="profile-name" th:text="${user.username}"></h2>
+        <div class="profile-status">
+          <p th:if="${user.isActive()}" class="status active">ACTIVE</p>
+          <p th:if="${!user.isActive()}" class="status inactive">INACTIVE</p>
+        </div>
+
+        <div class="details-container">
+          <strong>User id: </strong>
+          <p th:text="${user.id}"></p>
+        </div>
+        <div class="details-container">
+          <strong>Last update: </strong>
+          <p th:text="${#temporals.format(user.updatedOn, 'dd MMM YYYY HH:mm')}"></p>
+        </div>
+        <div class="details-container">
+          <strong>First name: </strong>
+          <p th:text="${#strings.isEmpty(user.firstName) ? 'No information provided' : user.firstName}"></p>
+        </div>
+        <div class="details-container">
+          <strong>Last name: </strong>
+          <p th:text="${#strings.isEmpty(user.lastName) ? 'No information provided' : user.lastName}"></p>
+        </div>
+        <div class="details-container">
+          <strong>Email: </strong>
+          <p th:text="${#strings.isEmpty(user.email) ? 'No information provided' : user.email}"></p>
+        </div>
+      </div>
+    </div>
+  </main>
+  <th:block th:insert="fragments/footer :: footer"></th:block>
+</body>
+</html>
