@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/wallet-main-logo.png">
+    <link rel="stylesheet" type="text/css" href="/css/common.css">
+    <link rel="stylesheet" type="text/css" href="/css/transaction-result.css">
+    <link rel="stylesheet" type="text/css" href="/css/card.css">
+    <link rel="stylesheet" type="text/css" href="/css/home-common.css">
+    <link rel="stylesheet" type="text/css" href="/css/nav-side-bar.css">
+
+    <title>Transaction Result</title>
+</head>
+<body>
+    <th:block th:insert="fragments/header :: header"></th:block>
+    <main>
+        <th:block th:insert="fragments/navbar :: navbar"></th:block>
+        <div class="result card">
+            <div th:if="${transaction.status.name() == 'SUCCEEDED'}" class="description-container">
+                <div class="payment-header">
+                    <div class="icon success">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <h2>Your transfer was successfully processed</h2>
+                    <p>The receiver's first standard wallet was topped up by the amount you sent.</p>
+                </div>
+                <div class="payment-details">
+                    <div class="details">
+                        <span class="item">Product:</span>
+                        <span class="value" th:text="${transaction.description}">1232131</span>
+                    </div>
+                    <div class="details">
+                        <span class="item">Amount:</span>
+                        <span class="value" th:text="${transaction.amount + ' EUR '}">23123213213</span>
+                    </div>
+                </div>
+            </div>
+
+            <div th:if="${transaction.status.name() == 'FAILED'}" class="description-container">
+                <div class="payment-header">
+                    <div class="icon fail">
+                        <i class="fa-solid fa-x"></i>
+                    </div>
+                    <h2>Transfer Failed</h2>
+                    <p>Unfortunately, your payment could not be processed. Please try again or contact support if the
+                        issue persists.</p>
+                </div>
+                <div class="payment-details">
+                    <div class="details">
+                        <span class="item">Product:</span>
+                        <span class="value" th:text="${transaction.description}"></span>
+                    </div>
+                    <div class="details">
+                        <span class="item">Reason:</span>
+                        <span class="value" th:text="${transaction.failureReason}"></span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="details-container">
+                <strong>Transaction id: </strong>
+                <p th:text="${transaction.id}">545411515</p>
+            </div>
+
+            <a th:href="@{/home}" class="back button">Go back</a>
+        </div>
+    </main>
+    <th:block th:insert="fragments/footer :: footer"></th:block>
+</body>
+</html>

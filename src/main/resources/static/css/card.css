@@ -1,0 +1,43 @@
+.card {
+    width: 680px;
+    height: 680px;
+    padding: 15px;
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 15px;
+    box-shadow: 5px 5px 10px black;
+    background: #d4d4d491;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    p,h2,strong {
+        color: black;
+        line-height: 1.4;
+    }
+
+    .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border: 2px solid black;
+        border-radius: 50px;
+        width: 100px;
+        height: 100px;
+
+        i {
+            color: black;
+            font-size: 80px;
+        }
+    }
+}
+
+.back {
+    text-align: center;
+    width: 120px;
+    background-color: rgb(32, 32, 32);
+    margin: 15px;
+}
