@@ -59,19 +59,19 @@ public class UserService {
 
         User user = userRepository.findById(id).orElseThrow();
 
-        if ((user.getFirstName().isEmpty() && !editRequest.getFirstName().isEmpty()) || (!user.getFirstName().isEmpty() && !editRequest.getFirstName().isEmpty())) {
+        if ((user.getFirstName() == null && !editRequest.getFirstName().isEmpty()) || (user.getFirstName() != null && !editRequest.getFirstName().isEmpty())) {
             user.setFirstName(editRequest.getFirstName());
         }
 
-        if ((user.getLastName().isEmpty() && !editRequest.getLastName().isEmpty()) || (!user.getLastName().isEmpty() && !editRequest.getLastName().isEmpty())) {
+        if ((user.getLastName() == null && !editRequest.getLastName().isEmpty()) || (user.getLastName() != null && !editRequest.getLastName().isEmpty())) {
             user.setLastName(editRequest.getLastName());
         }
 
-        if ((user.getEmail().isEmpty() && !editRequest.getEmail().isEmpty()) || (!user.getEmail().isEmpty() && !editRequest.getEmail().isEmpty())) {
+        if ((user.getEmail() == null && !editRequest.getEmail().isEmpty()) || (user.getEmail() != null && !editRequest.getEmail().isEmpty())) {
             user.setEmail(editRequest.getEmail());
         }
 
-        if ((user.getProfilePic().isEmpty() && !editRequest.getProfilePic().isEmpty()) || (!user.getProfilePic().isEmpty() && !editRequest.getProfilePic().isEmpty())) {
+        if ((user.getProfilePic() == null && !editRequest.getProfilePic().isEmpty()) || (user.getProfilePic() != null && !editRequest.getProfilePic().isEmpty())) {
             user.setProfilePic(editRequest.getProfilePic());
         }
 

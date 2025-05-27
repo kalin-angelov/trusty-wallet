@@ -113,7 +113,7 @@ public class WalletService {
                 .stream()
                 .filter(wallet -> wallet.getStatus() == WalletStatus.ACTIVE)
                 .findFirst();
-        String descriptionOfTransaction = "Transfer From: %s To: %s".formatted(senderWallet.getOwner().getUsername(), transferRequest.getReceiver());
+        String descriptionOfTransaction = "Transferring currency from [%s] to [%s]".formatted(senderWallet.getOwner().getUsername(), transferRequest.getReceiver());
         boolean walletCanHandleTransaction = chargeWallet(senderWallet, transferRequest.getAmount());
 
         if (optionalReceiverWallet.isEmpty() || !walletCanHandleTransaction) {
