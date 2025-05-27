@@ -9,26 +9,27 @@
   <title>Document</title>
 </head>
 <body>
-<main>
-  <div class="error-card">
+  <th:block th:insert="fragments/header :: header"></th:block>
+  <main>
+    <div class="error-card">
 
-    <div class="message">
-      <div class="icon">
-        <i class="fa-solid fa-question"></i>
+      <div class="message">
+        <div class="icon">
+          <i class="fa-solid fa-question"></i>
+        </div>
+        <h2>Oops! We couldn't find that.</h2>
+        <p>If you need any further assistance with your query, please don't hesitate to reach out to our support team. We're here to help!</p>
       </div>
-      <h2>Oops! We couldn't find that.</h2>
-      <p>If you need any further assistance with your query, please don't hesitate to reach out to our support team. We're here to help!</p>
-    </div>
-    <div class="error-details">
-      <strong>Error code: </strong>
-      <p>404 Not Found</p>
-    </div>
+      <div class="error-details">
+        <strong>Error code: </strong>
+        <p>404 Not Found</p>
+      </div>
 
-    <a th:href="@{/home}" class="back button">
-      Go Back
-    </a>
-  </div>
-</main>
-<th:block th:insert="fragments/footer :: footer"></th:block>
+      <a th:href="@{/home}" class="back button">
+        Go Back
+      </a>
+    </div>
+  </main>
+  <th:block th:insert="fragments/footer :: footer"></th:block>
 </body>
 </html>

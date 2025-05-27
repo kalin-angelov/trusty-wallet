@@ -26,11 +26,14 @@ body {
 }
 
 main {
-    min-height: 90dvh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.nav-container {
+    padding: 15px;
 }
 
 .button {

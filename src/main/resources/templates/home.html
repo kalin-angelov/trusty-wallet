@@ -11,65 +11,66 @@
   <title>Home</title>
 </head>
 <body>
-<main>
-  <th:block th:insert="fragments/navbar :: navbar"></th:block>
-  <div class="home">
-    <div class="profile-information container">
-      <div class="profile-header">
-        <img class="profile-image" th:src="${#strings.isEmpty(user.profilePic) ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : user.profilePic}" alt="Profile avatar">
-        <h2 class="profile-name" th:text="${user.username}"></h2>
-        <div class="profile-status">
-          <p th:if="${user.isActive()}" class="status active">ACTIVE</p>
-          <p th:if="${!user.isActive()}" class="status inactive">INACTIVE</p>
+  <th:block th:insert="fragments/header :: header"></th:block>
+  <main>
+    <th:block th:insert="fragments/navbar :: navbar"></th:block>
+    <div class="home">
+      <div class="profile-information container">
+        <div class="profile-header">
+          <img class="profile-image" th:src="${#strings.isEmpty(user.profilePic) ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : user.profilePic}" alt="Profile avatar">
+          <h2 class="profile-name" th:text="${user.username}"></h2>
+          <div class="profile-status">
+            <p th:if="${user.isActive()}" class="status active">ACTIVE</p>
+            <p th:if="${!user.isActive()}" class="status inactive">INACTIVE</p>
+          </div>
+          <div class="details-container">
+            <strong>User id: </strong>
+            <p th:text="${user.id}"></p>
+          </div>
         </div>
-        <div class="details-container">
-          <strong>User id: </strong>
-          <p th:text="${user.id}"></p>
+
+        <div class="profile-info">
+          <div class="details-container">
+            <strong>Username: </strong>
+            <p th:text="${user.username}"></p>
+          </div>
+          <div class="details-container">
+            <strong>Email: </strong>
+            <p th:text="${#strings.isEmpty(user.email) ? 'Edit your profile and add email' : user.email}"> </p>
+          </div>
+          <div class="details-container">
+            <strong>Joined: </strong>
+            <p th:text="${#temporals.format(user.createdOn, 'dd MMM YYYY HH:mm')}"></p>
+          </div>
         </div>
+
+        <a th:href="@{'/users/' + ${user.id} + '/profile'}" class="profile-button button"> Edit Profile</a>
       </div>
 
-      <div class="profile-info">
-        <div class="details-container">
-          <strong>Username: </strong>
-          <p th:text="${user.username}"></p>
+      <div class="profile-wallet container">
+        <div class="wallet-info">
+          <p class="wallet-type">Standard Wallet</p>
+          <p th:text="${user.wallets[0].status}" th:classappend="${user.wallets[0].status.name() == 'ACTIVE' ? 'status active' : 'status inactive'}"></p>
         </div>
-        <div class="details-container">
-          <strong>Email: </strong>
-          <p th:text="${#strings.isEmpty(user.email) ? 'Edit your profile and add email' : user.email}"> </p>
+        <div class="wallet-balance">
+          <p th:text="${user.wallets[0].balance + ' EUR'}" class="balance"></p>
+          <p class="available-balance">Available Balance</p>
         </div>
-        <div class="details-container">
-          <strong>Joined: </strong>
-          <p th:text="${#temporals.format(user.createdOn, 'dd MMM YYYY HH:mm')}"></p>
+
+        <a class="profile-button button" th:href="@{/wallets}">Open Wallets</a>
+        <div class="wallet-details">
+          <div class="details-container">
+            <strong>Wallet id: </strong>
+            <p th:text="${user.wallets[0].id}"></p>
+          </div>
+          <div class="details-container">
+            <strong>Last transaction on: </strong>
+            <p th:text="${#temporals.format(user.wallets[0].updatedOn, 'dd MMM YYYY HH:mm')}"></p>
+          </div>
         </div>
       </div>
-
-      <a th:href="@{'/users/' + ${user.id} + '/profile'}" class="profile-button button"> Edit Profile</a>
     </div>
-
-    <div class="profile-wallet container">
-      <div class="wallet-info">
-        <p class="wallet-type">Standard Wallet</p>
-        <p th:text="${user.wallets[0].status}" th:classappend="${user.wallets[0].status.name() == 'ACTIVE' ? 'status active' : 'status inactive'}"></p>
-      </div>
-      <div class="wallet-balance">
-        <p th:text="${user.wallets[0].balance + ' EUR'}" class="balance"></p>
-        <p class="available-balance">Available Balance</p>
-      </div>
-
-      <a class="profile-button button" th:href="@{/wallets}">Open Wallets</a>
-      <div class="wallet-details">
-        <div class="details-container">
-          <strong>Wallet id: </strong>
-          <p th:text="${user.wallets[0].id}"></p>
-        </div>
-        <div class="details-container">
-          <strong>Last transaction on: </strong>
-          <p th:text="${#temporals.format(user.wallets[0].updatedOn, 'dd MMM YYYY HH:mm')}"></p>
-        </div>
-      </div>
-    </div>
-  </div>
-</main>
-<th:block th:insert="fragments/footer :: footer"></th:block>
+  </main>
+  <th:block th:insert="fragments/footer :: footer"></th:block>
 </body>
 </html>

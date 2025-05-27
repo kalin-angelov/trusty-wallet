@@ -5,7 +5,6 @@ import app.user.model.User;
 import app.user.model.UserRole;
 import app.user.repository.UserRepository;
 import app.wallet.model.Wallet;
-import app.wallet.repository.WalletRepository;
 import app.wallet.service.WalletService;
 import app.web.dto.EditRequest;
 import app.web.dto.RegisterRequest;
@@ -60,10 +59,22 @@ public class UserService {
 
         User user = userRepository.findById(id).orElseThrow();
 
-        user.setFirstName(editRequest.getFirstName());
-        user.setLastName(editRequest.getLastName());
-        user.setEmail(editRequest.getEmail());
-        user.setProfilePic(editRequest.getProfilePic());
+        if ((user.getFirstName().isEmpty() && !editRequest.getFirstName().isEmpty()) || (!user.getFirstName().isEmpty() && !editRequest.getFirstName().isEmpty())) {
+            user.setFirstName(editRequest.getFirstName());
+        }
+
+        if ((user.getLastName().isEmpty() && !editRequest.getLastName().isEmpty()) || (!user.getLastName().isEmpty() && !editRequest.getLastName().isEmpty())) {
+            user.setLastName(editRequest.getLastName());
+        }
+
+        if ((user.getEmail().isEmpty() && !editRequest.getEmail().isEmpty()) || (!user.getEmail().isEmpty() && !editRequest.getEmail().isEmpty())) {
+            user.setEmail(editRequest.getEmail());
+        }
+
+        if ((user.getProfilePic().isEmpty() && !editRequest.getProfilePic().isEmpty()) || (!user.getProfilePic().isEmpty() && !editRequest.getProfilePic().isEmpty())) {
+            user.setProfilePic(editRequest.getProfilePic());
+        }
+
         user.setUpdatedOn(LocalDateTime.now());
 
         userRepository.save(user);

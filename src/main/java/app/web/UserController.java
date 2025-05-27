@@ -43,17 +43,18 @@ public class UserController {
     @PutMapping("/{id}/profile")
     public ModelAndView editProfile(@PathVariable UUID id, @Valid EditRequest editRequest, BindingResult bindingResult) {
 
-        if (bindingResult.hasErrors()) {
-            User user = userService.getUserById(id);
-            ModelAndView modelAndView = new ModelAndView();
+        User user = userService.getUserById(id);
+        ModelAndView modelAndView = new ModelAndView();
 
-            modelAndView.setViewName("profile");
-            modelAndView.addObject("user", user);
+        modelAndView.setViewName("profile");
+        modelAndView.addObject("user", user);
+
+        if (!bindingResult.hasErrors()) {
+            userService.editUser(id, editRequest);
+            modelAndView.addObject("editRequest", new EditRequest());
             return modelAndView;
         }
 
-        userService.editUser(id, editRequest);
-
-        return new ModelAndView("redirect:/home");
+        return modelAndView;
     }
 }

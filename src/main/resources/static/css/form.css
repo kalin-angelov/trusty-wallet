@@ -1,10 +1,6 @@
 main {
-    min-height: 85dvh;
+    min-height: 90dvh;
     color: white;
-}
-
-.nav-container {
-    padding: 15px;
 }
 
 .form {
@@ -68,7 +64,22 @@ main {
         width: 368px;
         height: 45px;
         color: white;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+
+        p {
+            font-size: 18px;
+            color: white;
+        }
+
+        i {
+            color: white;
+        }
     }
+
     p {
         font-size: 12px;
         text-align: center;

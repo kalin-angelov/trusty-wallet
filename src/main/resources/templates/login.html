@@ -9,41 +9,37 @@
   <title>Login</title>
 </head>
 <body>
-<header>
-  <div class="nav-container">
-      <a href="/">
-        <img src="/images/main-logo.png" alt="logo" width="50px" height="50px">
-      </a>
-  </div>
-</header>
-<main>
-  <form class="form" th:action="@{/login}" th:method="POST" th:object="${loginRequest}">
+  <th:block th:insert="fragments/header :: header"></th:block>
+  <main>
+    <form class="form" th:action="@{/login}" th:method="POST" th:object="${loginRequest}">
 
-    <h3>Login</h3>
+      <h3>Login</h3>
 
-    <fieldset>
-      <label for="username">Username</label>
-      <div class="formInput">
-        <i class="fa-solid fa-user"></i>
-        <input type="text" placeholder="Username" id="username" th:field="*{username}" required>
-      </div>
-      <p class="alarm-alert" th:if="${errorMessage}" th:text="${errorMessage}"></p>
-    </fieldset>
+      <fieldset>
+        <label for="username">Username</label>
+        <div class="formInput">
+          <i class="fa-solid fa-user"></i>
+          <input type="text" placeholder="Username" id="username" th:field="*{username}" required>
+        </div>
+        <p class="alarm-alert" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+      </fieldset>
 
-    <fieldset>
-      <label for="password">Password</label>
-      <div class="formInput">
-        <i class="fa-solid fa-key"></i>
-        <input type="password" placeholder="Password" id="password" th:field="*{password}" required>
-      </div>
-    </fieldset>
+      <fieldset>
+        <label for="password">Password</label>
+        <div class="formInput">
+          <i class="fa-solid fa-key"></i>
+          <input type="password" placeholder="Password" id="password" th:field="*{password}" required>
+        </div>
+      </fieldset>
 
-    <button class="button form-btn">Login</button>
+      <button class="button form-btn">
+        <p>Login</p>
+        <i class="fa-solid fa-paper-plane"></i>
+      </button>
 
-    <p>Don't have an account? Click here <i class="fa-regular fa-hand-point-right"> </i> <a href="/register">Register</a> </p>
-  </form>
-
-</main>
-<th:block th:insert="fragments/footer :: footer"></th:block>
+      <p>Don't have an account? Click here <i class="fa-regular fa-hand-point-right"> </i> <a href="/register">Register</a> </p>
+    </form>
+  </main>
+  <th:block th:insert="fragments/footer :: footer"></th:block>
 </body>
 </html>

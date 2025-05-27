@@ -15,10 +15,10 @@ import org.hibernate.validator.constraints.URL;
 @NoArgsConstructor
 public class EditRequest {
 
-    @Size(min = 4, message = "First name must be at least 4 characters")
+    @Size(max = 10, message = "First cant be more than 10 characters")
     private String firstName;
 
-    @Size(min = 4, message = "Last name must be at least 4 characters")
+    @Size(max = 10, message = "Last cant be more than 10 characters")
     private String lastName;
 
     @Email(message = "Invalid email format")

@@ -10,22 +10,21 @@
   <title>Home</title>
 </head>
 <body>
-<main>
-  <section class="index-home">
-    <a href="/" class="logo">
-      <img src="/images/main-logo.png" alt="Wallet logo" width="550px" height="550px">
-    </a>
-    <h1 class="main-header"><span>TRUSTY</span> WALLET</h1>
-    <p class="text-message">WHERE YOUR MONEY ARE SAFE</p>
-  </section>
-  <div class="nav-container">
-    <nav class="navbar">
-      <a th:href="@{/login}" class="button login">Login</a>
-      <a th:href="@{/register}" class="button register">Register</a>
-    </nav>
-  </div>
-</main>
-
-<th:block th:insert="fragments/footer :: footer"></th:block>
+  <main>
+    <section class="index-home">
+      <a href="/" class="logo">
+        <img src="/images/main-logo.png" alt="Wallet logo" width="550px" height="550px">
+      </a>
+      <h1 class="main-header"><span>TRUSTY</span> WALLET</h1>
+      <p class="text-message">WHERE YOUR MONEY ARE SAFE</p>
+    </section>
+    <div class="nav-container">
+      <nav class="navbar">
+        <a th:href="@{/login}" class="button login">Login</a>
+        <a th:href="@{/register}" class="button register">Register</a>
+      </nav>
+    </div>
+  </main>
+  <th:block th:insert="fragments/footer :: footer"></th:block>
 </body>
 </html>
