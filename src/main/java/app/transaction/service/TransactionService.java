@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -38,7 +39,13 @@ public class TransactionService {
 
     public List<Transaction> allUserTransactions (UUID id) {
 
-        return transactionRepository.findAllTransactionByOwnerId(id);
+        List<Transaction> transactions = transactionRepository.findAllTransactionByOwnerId(id);
+
+        if (!transactions.isEmpty()) {
+            transactions.sort(Comparator.comparing(Transaction::getCreatedOn).reversed());
+        }
+
+        return transactions;
     }
 
     public Transaction getTransaction(UUID id, UUID ownerId) {
