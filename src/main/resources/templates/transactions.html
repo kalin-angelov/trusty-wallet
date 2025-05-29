@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/images/wallet-main-logo.png">
+  <link rel="stylesheet" type="text/css" href="/css/common.css">
+  <link rel="stylesheet" type="text/css" href="/css/transactions.css">
+  <link rel="stylesheet" type="text/css" href="/css/nav-side-bar.css">
+  <title>Transactions</title>
+</head>
+<body>
+<th:block th:insert="fragments/header :: header"></th:block>
+<main>
+  <th:block th:insert="fragments/navbar :: navbar"></th:block>
+  <div class="table-container">
+    <div class="table-header">
+      <ul class="transaction-details">
+        <li>Id</li>
+        <li>Status</li>
+        <li>Amount</li>
+        <li>Balance</li>
+        <li>Note</li>
+        <li>Date</li>
+      </ul>
+    </div>
+    <div class="table-body">
+      <ul th:each="transaction : ${transactions}" class="transaction-information">
+        <li th:text="${transaction.id}"></li>
+        <li th:if="${transaction.status.name() == 'FAILED'}" class="status terminated">FAILED</li>
+        <li th:if="${transaction.status.name() == 'SUCCEEDED'}" class="status active">SUCCEEDED</li>
+        <li th:if="${transaction.status.name() == 'FAILED'}" th:text="${transaction.type.name() == 'DEPOSIT' ? '+' + transaction.amount + ' EUR' : '-' + transaction.amount + ' EUR'}" class="crosslined"></li>
+        <li th:if="${transaction.status.name() == 'SUCCEEDED'}" th:text="${transaction.type.name() == 'DEPOSIT' ? '+' + transaction.amount + ' EUR' : '-' + transaction.amount  + ' EUR'}"></li>
+        <li th:text="${transaction.balanceLeft + ' EUR'}"></li>
+        <li style="text-align: left" th:text="${transaction.status.name() == 'FAILED' ? transaction.failureReason : transaction.description}"></li>
+        <li th:text="${#temporals.format(transaction.createdOn, 'dd MMM YYYY HH:mm')}"></li>
+      </ul>
+    </div>
+  </div>
+</main>
+<th:block th:insert="fragments/footer :: footer"></th:block>
+</body>
+</html>
