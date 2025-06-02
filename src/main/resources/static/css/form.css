@@ -10,82 +10,86 @@ main {
     justify-content: center;
     gap: 10px;
 
-    background: #d4d4d491;
+    background: #eeeeee;
     box-shadow: 5px 5px 10px black;
     border-radius: 15px;
     padding: 50px;
+}
 
-    h3 {
-        font-size: 30px;
-        letter-spacing: 1px;
+h3 {
+    width: 75%;
+    font-size: 30px;
+    letter-spacing: 1px;
+    font-weight: 300;
+    padding: 10px;
+    margin-bottom: 16px;
+    text-align: center;
+    border-bottom: 1px solid white;
+}
+
+fieldset {
+    border: none;
+    width: 385px;
+    height: 100px;
+    padding: 10px;
+
+    label {
+        font-size: 18px;
         font-weight: 300;
-        padding: 10px;
+        letter-spacing: 1px;
     }
 
-    fieldset {
-        border: none;
-        width: 385px;
-        height: 100px;
-        padding: 10px;
-
-        label {
-            font-size: 18px;
-            font-weight: 300;
-            letter-spacing: 1px;
-        }
-
-        .formInput {
-            padding-top: 5px;
-            display: flex;
-            justify-content: center;
-            gap: 5px;
-
-            i {
-                color: black;
-                background-color: white;
-                padding: 10px;
-                font-size: 18px;
-                border-top-left-radius: 10px;
-                border-bottom-left-radius: 10px;
-            }
-
-            input, select {
-                width: 100%;
-                color: black;
-            }
-        }
-    }
-
-    .form-btn {
-        font-size: 20px;
-        background-color: rgb(8 184 149);
-        border-radius: 10px;
-        margin: 12px auto;
-        width: 368px;
-        height: 45px;
-        color: white;
-
+    .formInput {
+        padding-top: 5px;
         display: flex;
-        align-items: center;
         justify-content: center;
-        gap: 15px;
-
-        p {
-            font-size: 18px;
-            color: white;
-        }
+        gap: 5px;
 
         i {
-            color: white;
+            color: black;
+            background-color: white;
+            padding: 10px;
+            font-size: 18px;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+
+        input, select {
+            width: 100%;
+            color: black;
         }
     }
+}
+
+.form-btn {
+    font-size: 20px;
+    background-color: #0fc33c;
+    border-radius: 10px;
+    margin: 12px auto;
+    width: 368px;
+    height: 45px;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
 
     p {
-        font-size: 12px;
-        text-align: center;
+        font-size: 18px;
+        color: white;
+    }
 
-        a {
-            color: rgb(73, 197, 35);
-        }
+    i {
+        color: white;
+    }
+}
+
+p {
+    font-size: 12px;
+    text-align: center;
+
+    a {
+        color: rgb(73, 197, 35);
     }
 }
