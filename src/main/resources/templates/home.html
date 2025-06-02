@@ -49,7 +49,7 @@
 
       <div class="profile-wallet container">
         <div class="wallet-info">
-          <p class="wallet-type">Standard Wallet</p>
+          <p class="wallet-type" th:text="${user.wallets[0].type.name() + ' WALLER'}"></p>
           <p th:text="${user.wallets[0].status}" th:classappend="${user.wallets[0].status.name() == 'ACTIVE' ? 'status active' : 'status inactive'}"></p>
         </div>
         <div class="wallet-balance">
