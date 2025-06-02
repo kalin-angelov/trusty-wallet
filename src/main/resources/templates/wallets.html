@@ -15,8 +15,8 @@
     <th:block th:insert="fragments/header :: header"></th:block>
     <main>
         <th:block th:insert="fragments/navbar :: navbar"></th:block>
-        <div class="wallets" th:each="wallet : ${user.wallets}">
-            <div class="wallet-container">
+        <div class="wallets">
+            <div class="wallet-container" th:each="wallet : ${user.wallets}">
                 <div class="wallet-details">
                     <p class="wallet-type" th:text="${wallet.type.name()} + ' WALLET' ">DEFAULT WALLET</p>
 
