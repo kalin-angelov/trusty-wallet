@@ -45,6 +45,15 @@ main {
         padding: 10px;
         background: white;
         border-radius: 10px;
+
+        .crosslined {
+            text-decoration: line-through;
+            color: red;
+        }
+
+        .amount, .balance {
+            color: blue;
+        }
     }
 
 
@@ -58,10 +67,5 @@ main {
 
     .terminated {
         color: lightcoral;
-    }
-
-
-    .crosslined {
-        text-decoration: line-through;
     }
 }
