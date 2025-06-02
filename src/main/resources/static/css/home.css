@@ -46,13 +46,20 @@ main {
                 text-transform: uppercase;
             }
         }
+
+        .profile-info {
+            width: 100%;
+            padding: 10px 18px;
+            background: white;
+            border-radius: 10px;
+        }
     }
 
     .profile-wallet {
         display: flex;
         flex-direction: column;
         gap: 4px;
-        padding: 8px;
+        padding: 20px;
 
         .wallet-info {
             display: flex;
@@ -76,11 +83,6 @@ main {
                 align-self: center;
                 display: inline-block;
             }
-        }
-
-        .wallet-balance {
-            text-align: center;
-            padding: 10px;
         }
 
         .wallet-details {
