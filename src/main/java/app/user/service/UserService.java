@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -47,9 +48,9 @@ public class UserService {
         }
 
         User user = initializeUser(registerRequest);
-        Wallet wallet = walletService.createDefaultWallet(user);
+        List<Wallet> userWallets = walletService.createUserWallets(user);
 
-        user.setWallets(List.of(wallet));
+        user.setWallets(userWallets);
         userRepository.save(user);
         log.info("User with id [%s] and username [%s] created successfully".formatted(user.getId(), user.getUsername()));
         return user;
