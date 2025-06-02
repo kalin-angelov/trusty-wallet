@@ -5,6 +5,7 @@ import app.transaction.model.TransactionStatus;
 import app.transaction.model.TransactionType;
 import app.transaction.service.TransactionService;
 import app.user.model.User;
+import app.user.service.UserService;
 import app.wallet.model.Wallet;
 import app.wallet.model.WalletStatus;
 import app.wallet.model.WalletType;
@@ -34,22 +35,26 @@ public class WalletService {
         this.transactionService = transactionService;
     }
 
-    public Wallet createDefaultWallet(User user) {
+    public List<Wallet> createUserWallets(User user) {
 
-        Wallet wallet = initializeWallet(user);
-        walletRepository.save(wallet);
+        Wallet defaultWallet = initializeWallet(user, new BigDecimal(10), WalletType.DEFAULT, WalletStatus.ACTIVE);
+        Wallet savingWallet = initializeWallet(user, new BigDecimal(0), WalletType.SAVING, WalletStatus.INACTIVE);
+        Wallet payableWallet = initializeWallet(user, new BigDecimal(0), WalletType.PAYABLE, WalletStatus.INACTIVE);
+        List<Wallet> userWallets = new ArrayList<>(List.of(defaultWallet, savingWallet, payableWallet));
+        userWallets.sort(Comparator.comparing(Wallet::getBalance).reversed());
+        walletRepository.saveAll(userWallets);
 
-        log.info("Wallet it id [%s] successfully create for user with username [%s] and id [%s]".formatted(wallet.getId(), user.getUsername(), user.getId()));
-        return wallet;
+        log.info("Default Wallet with id [%s], Saving Wallet with id [%s], Payable Wallet with id [%s] successfully create for user with username [%s] and id [%s]".formatted(defaultWallet.getId(), savingWallet.getId(), payableWallet.getId(), user.getUsername(), user.getId()));
+        return userWallets;
     }
 
-    private Wallet initializeWallet (User user) {
+    private Wallet initializeWallet (User user, BigDecimal amount, WalletType type, WalletStatus status) {
 
         return Wallet.builder()
                 .owner(user)
-                .balance(new BigDecimal(10))
-                .type(WalletType.DEFAULT)
-                .status(WalletStatus.ACTIVE)
+                .balance(amount)
+                .type(type)
+                .status(status)
                 .createdOn(LocalDateTime.now())
                 .updatedOn(LocalDateTime.now())
                 .build();
@@ -86,7 +91,7 @@ public class WalletService {
     public Transaction chargeUpWallet(User owner, UUID walletId, BigDecimal amount) {
 
         Wallet wallet = walletRepository.findByIdAndOwnerId(walletId, owner.getId()).orElseThrow();
-        String description = "Charging wallet - %.2f EUR".formatted(amount.doubleValue());
+        String description = "Charging wallet - %.2f EUR.".formatted(amount.doubleValue());
 
         wallet.setBalance(wallet.getBalance().add(amount));
         wallet.setUpdatedOn(LocalDateTime.now());
