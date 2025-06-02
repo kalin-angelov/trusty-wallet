@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
 
-    background: #d4d4d491;
+    background: #eeeeee;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px black;
@@ -16,14 +16,22 @@
     gap: 10px;
     align-items: center;
     justify-content: start;
-    padding: 10px
+    padding: 10px;
+
+    p {
+        font-size: 16px;
+    }
+
+    strong {
+        font-size: 16px;
+    }
 }
 
 .profile-button {
-    margin-top: 10px;
+    margin-top: 22px;
     text-align: center;
     width: 150px;
-    background: radial-gradient(circle,rgba(110, 110, 110, 1) 0%, rgba(0, 0, 0, 1) 100%);
+    background: #0fc33c;
 }
 
 .status {
@@ -48,4 +56,24 @@
     color: #c62828;  letter-spacing: 0.03em;
     border: 1px solid rgba(255, 103, 103, 0.6);
     box-shadow: 0 4px 8px rgba(255, 103, 103, 0.2);
+}
+
+.wallet-balance {
+    text-align: center;
+    padding: 10px;
+    margin: 10px;
+    background: white;
+    border-radius: 10px;
+
+    .balance {
+        padding: 5px;
+        color: blue;
+        font-size: 16px;
+    }
+
+    .available-balance {
+        padding: 5px;
+        font-weight: 600;
+        font-size: 16px;
+    }
 }
