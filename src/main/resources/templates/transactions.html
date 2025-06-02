@@ -30,8 +30,8 @@
           <li th:if="${transaction.status.name() == 'FAILED'}" class="status terminated">FAILED</li>
           <li th:if="${transaction.status.name() == 'SUCCEEDED'}" class="status active">SUCCEEDED</li>
           <li th:if="${transaction.status.name() == 'FAILED'}" th:text="${transaction.type.name() == 'DEPOSIT' ? '+' + transaction.amount + ' EUR' : '-' + transaction.amount + ' EUR'}" class="crosslined"></li>
-          <li th:if="${transaction.status.name() == 'SUCCEEDED'}" th:text="${transaction.type.name() == 'DEPOSIT' ? '+' + transaction.amount + ' EUR' : '-' + transaction.amount  + ' EUR'}"></li>
-          <li th:text="${transaction.balanceLeft + ' EUR'}"></li>
+          <li th:if="${transaction.status.name() == 'SUCCEEDED'}" th:text="${transaction.type.name() == 'DEPOSIT' ? '+' + transaction.amount + ' EUR' : '-' + transaction.amount  + ' EUR'}" class="amount"></li>
+          <li th:text="${transaction.balanceLeft + ' EUR'}" class="balance"></li>
           <li style="text-align: left" th:text="${transaction.status.name() == 'FAILED' ? transaction.failureReason : transaction.description}"></li>
           <li th:text="${#temporals.format(transaction.createdOn, 'dd MMM YYYY HH:mm')}"></li>
         </ul>
