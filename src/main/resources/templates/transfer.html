@@ -25,7 +25,7 @@
                     <i class="fa-solid fa-wallet"></i>
                     <select id="sender" name="sender" required="" th:field="*{sender}">
                         <option value="" selected disabled="">Select your wallet</option>
-                        <option th:each="wallet : ${user.wallets}" th:value="${wallet.id}" th:text="${'Standard Wallet - ' + wallet.balance + ' EUR'}"></option>
+                        <option th:each="wallet : ${user.wallets}" th:value="${wallet.id}" th:text="${wallet.type + ' WALLET - ' + wallet.balance + ' EUR'}"></option>
                     </select>
                 </div>
 
