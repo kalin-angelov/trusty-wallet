@@ -3,7 +3,7 @@
 }
 
 .side-bar-container {
-  background: #d4d4d491;
+  background: #eeeeee;
   width: 240px;
   height: 100%;
   border-radius: 12px;
@@ -41,7 +41,6 @@
 
   a {
     display: flex;
-    text-decoration: row;
     justify-content: space-between;
     font-weight: 300;
     font-size: 14px;
@@ -54,7 +53,7 @@
   }
 
   a:hover {
-    background: radial-gradient(circle,rgba(110, 110, 110, 1) 0%, rgba(0, 0, 0, 1) 100%);
+    background: #0fc33c;
     color: white;
     font-size: 14px;
     font-weight: 300;
@@ -67,7 +66,7 @@
   }
 
  a.active {
-   background: radial-gradient(circle,rgba(110, 110, 110, 1) 0%, rgba(0, 0, 0, 1) 100%);
+   background: #0fc33c;
    color: white;
    font-weight: 300;
 
@@ -80,6 +79,7 @@
     margin: 0;
     align-self: center;
     display: inline-block;
+    font-size: 16px;
   }
 
   i {
@@ -99,9 +99,11 @@
 }
 
 .name {
-  margin: 16px;
+  margin-bottom: 26px;
+  padding: 10px;
   font-size: 22px;
   font-weight: 400;
   letter-spacing: 1px;
   text-align: center;
+  border-bottom: 1px solid white;
 }
