@@ -1,5 +1,6 @@
 package app.user.service;
 
+import app.credit.service.CreditService;
 import app.exception.UsernameAlreadyExistException;
 import app.user.model.User;
 import app.user.model.UserRole;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,16 +25,16 @@ import java.util.UUID;
 public class UserService {
 
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
-
     private final WalletService walletService;
+    private final CreditService creditService;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, WalletService walletService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, WalletService walletService, CreditService creditService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.walletService = walletService;
+        this.creditService = creditService;
     }
 
     @Transactional
@@ -49,6 +49,7 @@ public class UserService {
 
         User user = initializeUser(registerRequest);
         List<Wallet> userWallets = walletService.createUserWallets(user);
+        creditService.createCredit(user);
 
         user.setWallets(userWallets);
         userRepository.save(user);

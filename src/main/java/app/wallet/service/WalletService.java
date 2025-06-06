@@ -1,11 +1,12 @@
 package app.wallet.service;
 
+import app.credit.service.CreditService;
+import app.exception.WalletDoNotExistException;
 import app.transaction.model.Transaction;
 import app.transaction.model.TransactionStatus;
 import app.transaction.model.TransactionType;
 import app.transaction.service.TransactionService;
 import app.user.model.User;
-import app.user.service.UserService;
 import app.wallet.model.Wallet;
 import app.wallet.model.WalletStatus;
 import app.wallet.model.WalletType;
@@ -28,11 +29,13 @@ public class WalletService {
 
     private final WalletRepository walletRepository;
     private final TransactionService transactionService;
+    private final CreditService creditService;
 
     @Autowired
-    public WalletService(WalletRepository walletRepository, TransactionService transactionService) {
+    public WalletService(WalletRepository walletRepository, TransactionService transactionService, CreditService creditService) {
         this.walletRepository = walletRepository;
         this.transactionService = transactionService;
+        this.creditService = creditService;
     }
 
     public List<Wallet> createUserWallets(User user) {
@@ -41,7 +44,6 @@ public class WalletService {
         Wallet savingWallet = initializeWallet(user, new BigDecimal(0), WalletType.SAVING, WalletStatus.INACTIVE);
         Wallet payableWallet = initializeWallet(user, new BigDecimal(0), WalletType.PAYABLE, WalletStatus.INACTIVE);
         List<Wallet> userWallets = new ArrayList<>(List.of(defaultWallet, savingWallet, payableWallet));
-        userWallets.sort(Comparator.comparing(Wallet::getBalance).reversed());
         walletRepository.saveAll(userWallets);
 
         log.info("Default Wallet with id [%s], Saving Wallet with id [%s], Payable Wallet with id [%s] successfully create for user with username [%s] and id [%s]".formatted(defaultWallet.getId(), savingWallet.getId(), payableWallet.getId(), user.getUsername(), user.getId()));
@@ -58,18 +60,6 @@ public class WalletService {
                 .createdOn(LocalDateTime.now())
                 .updatedOn(LocalDateTime.now())
                 .build();
-    }
-
-    public Map<UUID, List<Transaction>> getLastTransactions(List<Wallet> wallets) {
-
-        Map<UUID, List<Transaction>> userWalletsAllLastTransactions = new LinkedHashMap<>();
-
-        for (Wallet wallet : wallets) {
-            List<Transaction> lastTransactions = transactionService.getWalletLastTransaction(wallet);
-            userWalletsAllLastTransactions.put(wallet.getId(), lastTransactions);
-        }
-
-        return userWalletsAllLastTransactions;
     }
 
     public Wallet changeStatus(UUID id, User user) {
@@ -97,6 +87,8 @@ public class WalletService {
         wallet.setUpdatedOn(LocalDateTime.now());
         walletRepository.save(wallet);
 
+        creditService.addAmountToCredit(owner, amount);
+
         return transactionService.initializeTransaction(
                 wallet.getOwner(),
                 SENDER,
@@ -113,7 +105,7 @@ public class WalletService {
     @Transactional
     public Transaction makeTransfer(User user,TransferRequest transferRequest) {
 
-        Wallet senderWallet = walletRepository.findByIdAndOwnerId(transferRequest.getSender(), user.getId()).orElseThrow();
+        Wallet senderWallet = walletRepository.findByIdAndOwnerId(transferRequest.getSender(), user.getId()).orElseThrow(() ->new WalletDoNotExistException("Wallet with id [%s] do not exist in database.".formatted(transferRequest.getSender())));
         Optional<Wallet> optionalReceiverWallet = walletRepository.findAllByOwnerUsername(transferRequest.getReceiver())
                 .stream()
                 .filter(wallet -> wallet.getStatus() == WalletStatus.ACTIVE)
@@ -140,14 +132,26 @@ public class WalletService {
         receiverWallet.setUpdatedOn(LocalDateTime.now());
         walletRepository.save(receiverWallet);
 
+        transactionService.initializeTransaction(
+                receiverWallet.getOwner(),
+                senderWallet.getOwner().getUsername(),
+                receiverWallet.getOwner().getUsername(),
+                transferRequest.getAmount(),
+                receiverWallet.getBalance(),
+                TransactionType.DEPOSIT,
+                descriptionOfTransaction,
+                TransactionStatus.SUCCEEDED,
+                null
+        );
+
         senderWallet.setBalance(senderWallet.getBalance().subtract(transferRequest.getAmount()));
         senderWallet.setUpdatedOn(LocalDateTime.now());
         walletRepository.save(senderWallet);
 
         return transactionService.initializeTransaction(
                 senderWallet.getOwner(),
-                SENDER,
                 senderWallet.getOwner().getUsername(),
+                receiverWallet.getOwner().getUsername(),
                 transferRequest.getAmount(),
                 senderWallet.getBalance(),
                 TransactionType.DEPOSIT,

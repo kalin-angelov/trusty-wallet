@@ -4,7 +4,6 @@ import app.transaction.model.Transaction;
 import app.user.model.User;
 import app.user.model.UserPrinciple;
 import app.user.service.UserService;
-import app.wallet.model.Wallet;
 import app.wallet.service.WalletService;
 import app.web.dto.ChargeOwnWalletRequest;
 import jakarta.validation.Valid;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -39,12 +36,10 @@ public class WalletController {
     public ModelAndView getWalletPage (@AuthenticationPrincipal UserPrinciple userPrinciple) {
 
         User user = userService.getUserById(userPrinciple.getUser().getId());
-        Map<UUID, List<Transaction>> lastTransactions = walletService.getLastTransactions(user.getWallets());
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("wallets");
         modelAndView.addObject("user", user);
-        modelAndView.addObject("lastTransactions", lastTransactions);
         modelAndView.addObject("chargeOwnWalletRequest", new ChargeOwnWalletRequest());
         return modelAndView;
     }
