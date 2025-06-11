@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.UUID;
 
 @Service
@@ -22,10 +24,14 @@ public class CreditService {
 
     public Credit createCredit (User user) {
 
+        LocalDate firstDayOfTheNextMonth = LocalDate.now().with(TemporalAdjusters.firstDayOfNextMonth());
+
         Credit credit =  Credit.builder()
                 .owner(user)
                 .status(CreditStatus.PAYED)
                 .amount(new BigDecimal(0))
+                .payedOn(null)
+                .nextPaymentOn(firstDayOfTheNextMonth)
                 .build();
 
         creditRepository.save(credit);

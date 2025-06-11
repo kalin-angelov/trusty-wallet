@@ -29,9 +29,11 @@ public class Wallet {
     private BigDecimal balance;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private WalletType type;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private WalletStatus status;
 
     @Column(nullable = false)

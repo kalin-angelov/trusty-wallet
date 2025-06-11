@@ -27,6 +27,10 @@
             <strong>User credit: </strong>
             <p class="credit" th:text="${credit.amount + ' EUR'}"></p>
           </div>
+          <div class="details-container">
+            <strong>Next payment: </strong>
+            <p th:text="${credit.nextPaymentOn}"></p>
+          </div>
         </div>
 
         <div class="profile-info">
@@ -48,23 +52,23 @@
       </div>
 
       <div class="profile-wallet container">
-        <div class="wallet" th:each="wallet : ${user.wallets}">
-          <div class="wallet-details" th:if="${wallet.status.name() == 'ACTIVE'}">
+        <div class="wallet">
+          <div class="wallet-details" th:if="${user.wallets[0].status.name() == 'ACTIVE'}">
             <div class="wallet-info">
-              <p class="wallet-type" th:text="${wallet.type.name() + ' WALLET'}"></p>
-              <p th:text="${wallet.status}" th:classappend="${wallet.status.name() == 'ACTIVE' ? 'status active' : 'status inactive'}"></p>
+              <p class="wallet-type" th:text="${user.wallets[0].type.name() + ' WALLET'}"></p>
+              <p th:text="${user.wallets[0].status}" th:classappend="${user.wallets[0].status.name() == 'ACTIVE' ? 'status active' : 'status inactive'}"></p>
             </div>
             <div class="wallet-balance">
-              <p  th:text="${wallet.balance + ' EUR'}" class="balance"></p>
+              <p  th:text="${user.wallets[0].balance + ' EUR'}" class="balance"></p>
               <p class="available-balance">Available Balance</p>
             </div>
             <div class="details-container">
               <strong>Wallet id: </strong>
-              <p th:text="${wallet.id}"></p>
+              <p th:text="${user.wallets[0].id}"></p>
             </div>
             <div class="details-container">
               <strong>Last transaction on: </strong>
-              <p th:text="${#temporals.format(wallet.updatedOn, 'dd MMM YYYY HH:mm')}"></p>
+              <p th:text="${#temporals.format(user.wallets[0].updatedOn, 'dd MMM YYYY HH:mm')}"></p>
             </div>
           </div>
         </div>

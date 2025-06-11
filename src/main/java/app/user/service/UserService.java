@@ -11,11 +11,14 @@ import app.web.dto.EditRequest;
 import app.web.dto.RegisterRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -37,7 +40,13 @@ public class UserService {
         this.creditService = creditService;
     }
 
+    @Cacheable("users")
+    public List<User> getAllUsers() {
+        return userRepository.findAll().stream().sorted(Comparator.comparing(User::getCreatedOn)).toList();
+    }
+
     @Transactional
+    @CacheEvict(value = "users", allEntries = true)
     public User register(RegisterRequest registerRequest) {
 
         Optional<User> optionalUser = userRepository.findByUsername(registerRequest.getUsername());
@@ -57,6 +66,7 @@ public class UserService {
         return user;
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public User editUser (UUID id, EditRequest editRequest) {
 
         User user = userRepository.findById(id).orElseThrow();
@@ -99,5 +109,28 @@ public class UserService {
 
     public User getUserById(UUID id) {
         return userRepository.findById(id).orElseThrow();
+    }
+
+    @CacheEvict(value = "users", allEntries = true)
+    public void changeUserRole(UUID id) {
+
+        User user = getUserById(id);
+
+        if (user.getRole() == UserRole.USER) {
+            user.setRole(UserRole.ADMIN);
+        } else  {
+            user.setRole(UserRole.USER);
+        }
+
+        userRepository.save(user);
+    }
+
+    @CacheEvict(value = "users", allEntries = true)
+    public void changeUserStatus(UUID id) {
+
+        User user = getUserById(id);
+
+        user.setActive(!user.isActive());
+        userRepository.save(user);
     }
 }

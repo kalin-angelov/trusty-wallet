@@ -2,6 +2,7 @@ package app.user.model;
 
 import app.wallet.model.Wallet;
 import jakarta.persistence.*;
+import jdk.jfr.BooleanFlag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,6 +40,7 @@ public class User {
     private String lastName;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
     @Column(nullable = false)
@@ -50,6 +52,7 @@ public class User {
     @Column(nullable = false)
     private boolean isActive;
 
+    @OrderBy("createdOn ASC")
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
     private List<Wallet> wallets = new ArrayList<>();
 }

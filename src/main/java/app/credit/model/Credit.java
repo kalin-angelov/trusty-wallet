@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -25,8 +27,13 @@ public class Credit {
     private User owner;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private CreditStatus status;
 
     @Column(nullable = false)
     private BigDecimal amount;
+
+    private LocalDateTime payedOn;
+
+    private LocalDate nextPaymentOn;
 }
