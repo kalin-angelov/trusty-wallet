@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/wallet-main-logo.png">
+    <link rel="stylesheet" type="text/css" href="/css/common.css">
+    <link rel="stylesheet" type="text/css" href="/css/table.css">
+    <link rel="stylesheet" type="text/css" href="/css/users.css">
+    <link rel="stylesheet" type="text/css" href="/css/nav-side-bar.css">
+    <title>Users</title>
+</head>
+<body>
+<th:block th:insert="fragments/header :: header"></th:block>
+<main>
+    <th:block th:insert="fragments/navbar :: navbar"></th:block>
+    <div class="table-container">
+        <div class="table-header">
+            <ul class="details">
+                <li>Id</li>
+                <li>Username</li>
+                <li>Email</li>
+                <li>Status</li>
+                <li>Role</li>
+                <li>Created on</li>
+                <li>Switch status</li>
+                <li>Change role</li>
+            </ul>
+        </div>
+        <div class="table-body">
+            <ul th:each="userDetails : ${users}" class="information">
+                <li th:text="${userDetails.id}"></li>
+                <li th:text="${userDetails.username}"></li>
+                <li th:text="${#strings.isEmpty(userDetails.email) ? 'no email' : userDetails.email}"></li>
+                <li th:if="${userDetails.active}" class="status active">active</li>
+                <li th:unless="${userDetails.active}" class="status terminated">inactive</li>
+                <li th:text="${userDetails.role.name()}"></li>
+                <li th:text="${#temporals.format(userDetails.createdOn, 'dd MMM YYYY HH:mm')}"></li>
+                <li>
+                    <form th:action="@{'/users/' + ${userDetails.id} + '/status'}" th:method="PUT">
+                        <button th:if="${userDetails.active}" class="action-button button">
+                            status
+                        </button>
+                        <button th:unless="${userDetails.active}" class="action-button button inactive">
+                            status
+                        </button>
+                    </form>
+                </li>
+                <li>
+                    <form th:action="@{'/users/' + ${userDetails.id} + '/role'}" th:method="PUT">
+                        <button class="action-button button">
+                            role
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</main>
+<th:block th:insert="fragments/footer :: footer"></th:block>
+</body>
+</html>
