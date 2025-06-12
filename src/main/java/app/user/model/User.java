@@ -33,6 +33,7 @@ public class User {
     @Column(length = 1000)
     private String profilePic;
 
+    @Column(nullable = false, unique = true)
     private String email;
 
     private String firstName;
@@ -52,7 +53,6 @@ public class User {
     @Column(nullable = false)
     private boolean isActive;
 
-    @OrderBy("createdOn ASC")
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
     private List<Wallet> wallets = new ArrayList<>();
 }

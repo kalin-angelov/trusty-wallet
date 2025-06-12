@@ -17,6 +17,16 @@
       <h3>Register</h3>
 
       <fieldset>
+        <label for="password">Email</label>
+        <div class="formInput">
+          <i class="fa-solid fa-at"></i>
+          <input type="text" placeholder="Email" id="email" th:field="*{email}" required>
+        </div>
+        <p class="alarm-alert" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+        <p class="alarm-alert" th:text="${emailAlreadyExistMessage}"></p>
+      </fieldset>
+
+      <fieldset>
         <label for="username">Username</label>
         <div class="formInput">
           <i class="fa-solid fa-user"></i>
@@ -32,9 +42,8 @@
           <i class="fa-solid fa-key"></i>
           <input type="password" placeholder="Password" id="password" th:field="*{password}" required>
         </div>
-        <p class="alarm-alert" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+        <p class="alarm-alert" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
       </fieldset>
-
 
       <button class="button form-btn">
         <p>Register</p>

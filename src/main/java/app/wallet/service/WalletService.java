@@ -12,6 +12,7 @@ import app.wallet.model.WalletStatus;
 import app.wallet.model.WalletType;
 import app.wallet.repository.WalletRepository;
 import app.web.dto.TransferRequest;
+import app.web.dto.WalletsReport;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -172,5 +173,23 @@ public class WalletService {
 
         return canHandleTransaction;
 
+    }
+
+    public WalletsReport getWalletsReport() {
+
+        List<Wallet> allWallets = walletRepository.findAll();
+        BigDecimal totalWalletsAmount = allWallets.stream()
+                .map(Wallet::getBalance)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        long activeWallets = allWallets.stream().filter(wallet -> wallet.getStatus() == WalletStatus.ACTIVE).count();
+        long inactiveWallets = allWallets.stream().filter(wallet -> wallet.getStatus() == WalletStatus.INACTIVE).count();
+
+        return WalletsReport.builder()
+                .totalWallets(allWallets.size())
+                .totalWalletsAmount(totalWalletsAmount)
+                .activeWallets(activeWallets)
+                .inactiveWallets(inactiveWallets)
+                .createdOn(LocalDateTime.now())
+                .build();
     }
 }

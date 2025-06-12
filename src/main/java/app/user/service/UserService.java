@@ -1,6 +1,7 @@
 package app.user.service;
 
 import app.credit.service.CreditService;
+import app.exception.EmailAlreadyExistException;
 import app.exception.UsernameAlreadyExistException;
 import app.user.model.User;
 import app.user.model.UserRole;
@@ -9,6 +10,7 @@ import app.wallet.model.Wallet;
 import app.wallet.service.WalletService;
 import app.web.dto.EditRequest;
 import app.web.dto.RegisterRequest;
+import app.web.dto.UsersReport;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -49,9 +51,15 @@ public class UserService {
     @CacheEvict(value = "users", allEntries = true)
     public User register(RegisterRequest registerRequest) {
 
-        Optional<User> optionalUser = userRepository.findByUsername(registerRequest.getUsername());
+        Optional<User> optionalUserByUsername = userRepository.findByUsername(registerRequest.getUsername());
+        Optional<User> optionalUserByEmail = userRepository.findByEmail(registerRequest.getEmail());
 
-        if (optionalUser.isPresent()) {
+        if (optionalUserByEmail.isPresent()) {
+            log.info("User with email [%s] already exist.".formatted(registerRequest.getEmail()));
+            throw new EmailAlreadyExistException("User with email [%s] already exist.".formatted(registerRequest.getEmail()));
+        }
+
+        if (optionalUserByUsername.isPresent()) {
             log.info("User with username [%s] already exist.".formatted(registerRequest.getUsername()));
             throw new UsernameAlreadyExistException("User with username [%s] already exist.".formatted(registerRequest.getUsername()));
         }
@@ -69,6 +77,13 @@ public class UserService {
     @CacheEvict(value = "users", allEntries = true)
     public User editUser (UUID id, EditRequest editRequest) {
 
+        Optional<User> optionalEmail = userRepository.findByEmail(editRequest.getEmail());
+
+        if (optionalEmail.isPresent()) {
+            log.info("User with email [%s] already exist.".formatted(editRequest.getEmail()));
+            throw new EmailAlreadyExistException("User with email [%s] already exist.".formatted(editRequest.getEmail()));
+        }
+
         User user = userRepository.findById(id).orElseThrow();
 
         if ((user.getFirstName() == null && !editRequest.getFirstName().isEmpty()) || (user.getFirstName() != null && !editRequest.getFirstName().isEmpty())) {
@@ -79,7 +94,7 @@ public class UserService {
             user.setLastName(editRequest.getLastName());
         }
 
-        if ((user.getEmail() == null && !editRequest.getEmail().isEmpty()) || (user.getEmail() != null && !editRequest.getEmail().isEmpty())) {
+        if (!editRequest.getEmail().isEmpty()) {
             user.setEmail(editRequest.getEmail());
         }
 
@@ -100,6 +115,7 @@ public class UserService {
         return User.builder()
                 .username(registerRequest.getUsername())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
+                .email(registerRequest.getEmail())
                 .role(UserRole.USER)
                 .isActive(true)
                 .createdOn(LocalDateTime.now())
@@ -132,5 +148,23 @@ public class UserService {
 
         user.setActive(!user.isActive());
         userRepository.save(user);
+    }
+
+    public UsersReport getUsersReport() {
+
+        List<User> allUsers = userRepository.findAll();
+        long activeUsers = allUsers.stream().filter(User::isActive).count();
+        long inactiveUsers = allUsers.stream().filter(user -> !user.isActive()).count();
+        long adminUsers = allUsers.stream().filter(user -> user.getRole() == UserRole.ADMIN).count();
+        long nonAdmins = allUsers.stream().filter(user -> user.getRole() == UserRole.USER).count();
+
+        return UsersReport.builder()
+                .totalUsers(allUsers.size())
+                .activeUser(activeUsers)
+                .inactiveUsers(inactiveUsers)
+                .admins(adminUsers)
+                .nonAdmins(nonAdmins)
+                .createdOn(LocalDateTime.now())
+                .build();
     }
 }

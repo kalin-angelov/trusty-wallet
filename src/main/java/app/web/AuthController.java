@@ -1,7 +1,5 @@
 package app.web;
 
-import app.user.model.User;
-import app.user.service.MyUserDetailService;
 import app.user.service.UserService;
 import app.web.dto.LoginRequest;
 import app.web.dto.RegisterRequest;
