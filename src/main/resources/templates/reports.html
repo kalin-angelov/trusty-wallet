@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/wallet-main-logo.png">
+    <link rel="stylesheet" type="text/css" href="/css/common.css">
+    <link rel="stylesheet" type="text/css" href="/css/reports.css">
+    <link rel="stylesheet" type="text/css" href="/css/home-common.css">
+    <link rel="stylesheet" type="text/css" href="/css/nav-side-bar.css">
+    <title>Reports</title>
+</head>
+<body>
+    <th:block th:insert="fragments/header :: header"></th:block>
+    <main>
+        <th:block th:insert="fragments/navbar :: navbar"></th:block>
+        <div class="reports container">
+            <div class="report-block">
+                <div class="label-box">
+                    <p>User Reports</p>
+                </div>
+                <div class="report-information">
+                    <p>Total Users:</p>
+                    <p th:text="${usersReport.totalUsers}">13</p>
+                </div>
+                <div class="report-information">
+                    <p>Active Users:</p>
+                    <p th:text="${usersReport.activeUser}">12</p>
+                </div>
+                <div class="report-information">
+                    <p>Inactive Users:</p>
+                    <p th:text="${usersReport.inactiveUsers}">1</p>
+                </div>
+                <div class="report-information">
+                    <p>Admins:</p>
+                    <p th:text="${usersReport.admins}">1</p>
+                </div>
+                <div class="report-information">
+                    <p>Non-Admins:</p>
+                    <p th:text="${usersReport.nonAdmins}">12</p>
+                </div>
+                <div class="details-section">
+                    <strong>Data fetched on: </strong>
+                    <p th:text="${#temporals.format(usersReport.createdOn, 'dd MMM YYYY HH:mm')}">30 Dec 2024 16:56</p>
+                </div>
+            </div>
+            <div class="report-block">
+                <div class="label-box">
+                    <p>Wallet Reports</p>
+                </div>
+                <div class="report-information">
+                    <p>Total Wallets:</p>
+                    <p th:text="${walletsReport.totalWallets}">19</p>
+                </div>
+                <div class="report-information">
+                    <p>Total Wallet Amount:</p>
+                    <p th:text="${walletsReport.totalWalletsAmount + ' EUR'}">484.97</p>
+                </div>
+                <div class="report-information">
+                    <p>Active Wallets:</p>
+                    <p th:text="${walletsReport.activeWallets}">69</p>
+                </div>
+                <div class="report-information">
+                    <p>Inactive Wallets:</p>
+                    <p th:text="${walletsReport.inactiveWallets}">15</p>
+                </div>
+                <div class="details-section">
+                    <strong>Data fetched on: </strong>
+                    <p th:text="${#temporals.format(walletsReport.createdOn, 'dd MMM YYYY HH:mm')}">30 Dec 2024 16:56</p>
+                </div>
+            </div>
+            <div class="report-block">
+                <div class="label-box">
+                    <p>Transaction Reports</p>
+                </div>
+                <div class="report-information">
+                    <p>Total Transactions:</p>
+                    <p th:text="${transactionsReport.totalTransactions}">51</p>
+                </div>
+                <div class="report-information">
+                    <p>Total Transaction Amount:</p>
+                    <p th:text="${transactionsReport.totalTransactionAmount + ' EUR'}">1,042.38</p>
+                </div>
+                <div class="report-information">
+                    <p>Succeeded Transactions:</p>
+                    <p th:text="${transactionsReport.successfulTransactions}">42</p>
+                </div>
+                <div class="report-information">
+                    <p>Failed Transactions:</p>
+                    <p th:text="${transactionsReport.unsuccessfulTransactions}">9</p>
+                </div>
+                <div class="details-section">
+                    <strong>Data fetched on: </strong>
+                    <p th:text="${#temporals.format(transactionsReport.createdOn, 'dd MMM YYYY HH:mm')}">30 Dec 2024 16:56</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    <th:block th:insert="fragments/footer :: footer"></th:block>
+</body>
+</html>
