@@ -13,9 +13,9 @@
     <title>Transaction Result</title>
 </head>
 <body>
-    <th:block th:insert="fragments/header :: header"></th:block>
+    <th:block th:insert="~{fragments/header :: header}"></th:block>
     <main>
-        <th:block th:insert="fragments/navbar :: navbar"></th:block>
+        <th:block th:insert="~{fragments/navbar :: navbar}"></th:block>
         <div class="result card">
             <div th:if="${transaction.status.name() == 'SUCCEEDED'}" class="description-container">
                 <div class="payment-header">
@@ -67,6 +67,6 @@
             <a th:href="@{/home}" class="back button">Go back</a>
         </div>
     </main>
-    <th:block th:insert="fragments/footer :: footer"></th:block>
+    <th:block th:insert="~{fragments/footer :: footer}"></th:block>
 </body>
 </html>

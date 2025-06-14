@@ -56,12 +56,12 @@ public class UserService {
 
         if (optionalUserByEmail.isPresent()) {
             log.info("User with email [%s] already exist.".formatted(registerRequest.getEmail()));
-            throw new EmailAlreadyExistException("User with email [%s] already exist.".formatted(registerRequest.getEmail()));
+            throw new EmailAlreadyExistException("User with this email already exist.");
         }
 
         if (optionalUserByUsername.isPresent()) {
             log.info("User with username [%s] already exist.".formatted(registerRequest.getUsername()));
-            throw new UsernameAlreadyExistException("User with username [%s] already exist.".formatted(registerRequest.getUsername()));
+            throw new UsernameAlreadyExistException("User with this username already exist.");
         }
 
         User user = initializeUser(registerRequest);
@@ -81,7 +81,7 @@ public class UserService {
 
         if (optionalEmail.isPresent()) {
             log.info("User with email [%s] already exist.".formatted(editRequest.getEmail()));
-            throw new EmailAlreadyExistException("User with email [%s] already exist.".formatted(editRequest.getEmail()));
+            throw new EmailAlreadyExistException("User with this email already exist.");
         }
 
         User user = userRepository.findById(id).orElseThrow();

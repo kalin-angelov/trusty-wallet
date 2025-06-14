@@ -9,7 +9,7 @@
   <title>Login</title>
 </head>
 <body>
-  <th:block th:insert="fragments/header :: header"></th:block>
+  <th:block th:insert="~{fragments/header :: header}"></th:block>
   <main>
     <form class="form" th:action="@{/login}" th:method="POST" th:object="${loginRequest}">
 
@@ -40,6 +40,6 @@
       <p>Don't have an account? Click here <i class="fa-regular fa-hand-point-right"> </i> <a href="/register">Register</a> </p>
     </form>
   </main>
-  <th:block th:insert="fragments/footer :: footer"></th:block>
+  <th:block th:insert="~{fragments/footer :: footer}"></th:block>
 </body>
 </html>

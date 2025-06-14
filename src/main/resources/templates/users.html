@@ -11,9 +11,9 @@
     <title>Users</title>
 </head>
 <body>
-<th:block th:insert="fragments/header :: header"></th:block>
+<th:block th:insert="~{fragments/header :: header}"></th:block>
 <main>
-    <th:block th:insert="fragments/navbar :: navbar"></th:block>
+    <th:block th:insert="~{fragments/navbar :: navbar}"></th:block>
     <div class="table-container">
         <div class="table-header">
             <ul class="details">
@@ -57,6 +57,6 @@
         </div>
     </div>
 </main>
-<th:block th:insert="fragments/footer :: footer"></th:block>
+<th:block th:insert="~{fragments/footer :: footer}"></th:block>
 </body>
 </html>

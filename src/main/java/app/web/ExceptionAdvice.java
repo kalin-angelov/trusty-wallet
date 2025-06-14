@@ -2,8 +2,8 @@ package app.web;
 
 import app.exception.EmailAlreadyExistException;
 import app.exception.UsernameAlreadyExistException;
-import app.user.model.User;
 import app.user.model.UserPrinciple;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -36,11 +36,18 @@ public class ExceptionAdvice {
     }
 
     @ExceptionHandler(EmailAlreadyExistException.class)
-    public ModelAndView handleEmailAlreadyExistException(RedirectAttributes redirectAttributes, EmailAlreadyExistException exception) {
+    public ModelAndView handleEmailAlreadyExistException(@AuthenticationPrincipal UserPrinciple userPrinciple, HttpServletRequest request, RedirectAttributes redirectAttributes, EmailAlreadyExistException exception) {
+
+        String uri = request.getRequestURI();
 
         String errorMessage = exception.getMessage();
         redirectAttributes.addFlashAttribute("emailAlreadyExistMessage", errorMessage);
 
-        return new ModelAndView("redirect:/register");
+        if (uri.contains("/register")) {
+            return new ModelAndView("redirect:/register");
+        }
+
+        UUID id = userPrinciple.getUser().getId();
+        return new ModelAndView("redirect:/users/" + id + "/profile");
     }
 }

@@ -3,6 +3,7 @@ package app.transaction.service;
 import app.transaction.model.Transaction;
 import app.transaction.model.TransactionStatus;
 import app.transaction.model.TransactionType;
+import app.transaction.model.TransactionTypeStatus;
 import app.transaction.repository.TransactionRepository;
 import app.user.model.User;
 import app.wallet.model.Wallet;
@@ -53,7 +54,7 @@ public class TransactionService {
         return transactionRepository.findByIdAndOwnerId(id, ownerId).orElseThrow();
     }
 
-    public Transaction initializeTransaction(User owner, String sender, String receiver, BigDecimal amount, BigDecimal balanceLeft, TransactionType type, String description, TransactionStatus status, String failureReason) {
+    public Transaction initializeTransaction(User owner, String sender, String receiver, BigDecimal amount, BigDecimal balanceLeft, TransactionType type, String description, TransactionStatus status, TransactionTypeStatus typeStatus, String failureReason) {
 
         Transaction transaction = Transaction.builder()
                 .owner(owner)
@@ -64,6 +65,7 @@ public class TransactionService {
                 .type(type)
                 .description(description)
                 .status(status)
+                .typeStatus(typeStatus)
                 .failureReason(failureReason)
                 .createdOn(LocalDateTime.now())
                 .build();
@@ -75,7 +77,12 @@ public class TransactionService {
 
     public TransactionsReport getTransactionsReport() {
         List<Transaction> allTransactions = transactionRepository.findAll();
-        BigDecimal totalTransactionAmount = allTransactions.stream()
+        List<Transaction> totalTransactions = allTransactions.stream()
+                .filter(transaction -> transaction.getTypeStatus() == TransactionTypeStatus.MAIN)
+                .toList();
+        BigDecimal totalTransactionAmount = totalTransactions
+                .stream()
+                .filter(transaction -> transaction.getStatus() == TransactionStatus.SUCCEEDED)
                 .map(Transaction::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         long successfulTransactions = allTransactions.stream()
@@ -86,7 +93,7 @@ public class TransactionService {
                 .count();
 
         return TransactionsReport.builder()
-                .totalTransactions(allTransactions.size())
+                .totalTransactions(totalTransactions.size())
                 .totalTransactionAmount(totalTransactionAmount)
                 .successfulTransactions(successfulTransactions)
                 .unsuccessfulTransactions(unsuccessfulTransactions)

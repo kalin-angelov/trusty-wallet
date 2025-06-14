@@ -12,9 +12,9 @@
     <title>Wallets</title>
 </head>
 <body>
-    <th:block th:insert="fragments/header :: header"></th:block>
+    <th:block th:insert="~{fragments/header :: header}"></th:block>
     <main>
-        <th:block th:insert="fragments/navbar :: navbar"></th:block>
+        <th:block th:insert="~{fragments/navbar :: navbar}"></th:block>
         <div class="wallets">
             <div class="wallet-container" th:each="wallet : ${user.wallets}">
                 <div class="wallet-details">
@@ -67,6 +67,6 @@
             </div>
         </div>
     </main>
-    <th:block th:insert="fragments/footer :: footer"></th:block>
+    <th:block th:insert="~{fragments/footer :: footer}"></th:block>
 </body>
 </html>

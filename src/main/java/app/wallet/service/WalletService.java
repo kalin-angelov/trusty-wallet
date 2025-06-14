@@ -5,6 +5,7 @@ import app.exception.WalletDoNotExistException;
 import app.transaction.model.Transaction;
 import app.transaction.model.TransactionStatus;
 import app.transaction.model.TransactionType;
+import app.transaction.model.TransactionTypeStatus;
 import app.transaction.service.TransactionService;
 import app.user.model.User;
 import app.wallet.model.Wallet;
@@ -99,6 +100,7 @@ public class WalletService {
                 TransactionType.DEPOSIT,
                 description,
                 TransactionStatus.SUCCEEDED,
+                TransactionTypeStatus.MAIN,
                 null
         );
     }
@@ -124,6 +126,7 @@ public class WalletService {
                     TransactionType.DEPOSIT,
                     descriptionOfTransaction,
                     TransactionStatus.FAILED,
+                    TransactionTypeStatus.MAIN,
                     "Invalid criteria for transaction"
             );
         }
@@ -142,6 +145,7 @@ public class WalletService {
                 TransactionType.DEPOSIT,
                 descriptionOfTransaction,
                 TransactionStatus.SUCCEEDED,
+                TransactionTypeStatus.SECONDARY,
                 null
         );
 
@@ -158,6 +162,7 @@ public class WalletService {
                 TransactionType.DEPOSIT,
                 descriptionOfTransaction,
                 TransactionStatus.SUCCEEDED,
+                TransactionTypeStatus.MAIN,
                 null
         );
     }

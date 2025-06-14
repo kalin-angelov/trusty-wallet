@@ -10,7 +10,7 @@
   <title>Register</title>
 </head>
 <body>
-  <th:block th:insert="fragments/header :: header"></th:block>
+  <th:block th:insert="~{fragments/header :: header}"></th:block>
   <main>
     <form class="form" th:action="@{/register}" th:method="POST" th:object="${registerRequest}">
 
@@ -54,6 +54,6 @@
     </form>
 
   </main>
-  <th:block th:insert="fragments/footer :: footer"></th:block>
+  <th:block th:insert="~{fragments/footer :: footer}"></th:block>
 </body>
 </html>

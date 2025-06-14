@@ -46,6 +46,10 @@ public class Transaction {
     private TransactionStatus status;
 
     @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private TransactionTypeStatus typeStatus;
+
+    @Column(nullable = false)
     private String description;
 
     private String failureReason;
