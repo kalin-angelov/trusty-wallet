@@ -24,7 +24,6 @@
                 <li>Role</li>
                 <li>Created on</li>
                 <li>Switch status</li>
-                <li>Change role</li>
             </ul>
         </div>
         <div class="table-body">
@@ -43,13 +42,6 @@
                         </button>
                         <button th:unless="${userDetails.active}" class="action-button button inactive">
                             status
-                        </button>
-                    </form>
-                </li>
-                <li>
-                    <form th:action="@{'/users/' + ${userDetails.id} + '/role'}" th:method="PUT">
-                        <button class="action-button button">
-                            role
                         </button>
                     </form>
                 </li>

@@ -128,20 +128,6 @@ public class UserService {
     }
 
     @CacheEvict(value = "users", allEntries = true)
-    public void changeUserRole(UUID id) {
-
-        User user = getUserById(id);
-
-        if (user.getRole() == UserRole.USER) {
-            user.setRole(UserRole.ADMIN);
-        } else  {
-            user.setRole(UserRole.USER);
-        }
-
-        userRepository.save(user);
-    }
-
-    @CacheEvict(value = "users", allEntries = true)
     public void changeUserStatus(UUID id) {
 
         User user = getUserById(id);

@@ -77,13 +77,6 @@ public class UserController {
         return modelAndView;
     }
 
-    @PutMapping("/{id}/role")
-    @PreAuthorize("hasRole('ADMIN')")
-    public String changeUserRole(@PathVariable UUID id) {
-        userService.changeUserRole(id);
-
-        return "redirect:/users";
-    }
 
     @PutMapping("/{id}/status")
     @PreAuthorize("hasRole('ADMIN')")
