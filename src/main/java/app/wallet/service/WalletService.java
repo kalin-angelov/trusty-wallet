@@ -66,7 +66,7 @@ public class WalletService {
 
     public Wallet changeStatus(UUID id, User user) {
 
-        Wallet wallet = walletRepository.findByIdAndOwnerId(id, user.getId()).orElseThrow();
+        Wallet wallet = walletRepository.findByIdAndOwnerId(id, user.getId()).orElseThrow( () -> new RuntimeException("Wallet with id [%s] and owner [%s] do not exist.".formatted(id, user)));
 
         if (wallet.getStatus() == WalletStatus.ACTIVE) {
             wallet.setStatus(WalletStatus.INACTIVE);
@@ -82,7 +82,7 @@ public class WalletService {
     @Transactional
     public Transaction chargeUpWallet(User owner, UUID walletId, BigDecimal amount) {
 
-        Wallet wallet = walletRepository.findByIdAndOwnerId(walletId, owner.getId()).orElseThrow();
+        Wallet wallet = walletRepository.findByIdAndOwnerId(walletId, owner.getId()).orElseThrow(() ->new WalletDoNotExistException("Wallet with id [%s] do not exist in database.".formatted(walletId)));
         String description = "Charging wallet - %.2f EUR.".formatted(amount.doubleValue());
 
         wallet.setBalance(wallet.getBalance().add(amount));
