@@ -124,7 +124,7 @@ public class UserService {
     }
 
     public User getUserById(UUID id) {
-        return userRepository.findById(id).orElseThrow();
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User with id [%s] do not exist.".formatted(id)));
     }
 
     @CacheEvict(value = "users", allEntries = true)
