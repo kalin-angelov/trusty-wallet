@@ -85,9 +85,9 @@ public class TransactionServiceTest {
                 .createdOn(LocalDateTime.of(2024, 06, 05, 01, 59))
                 .build();
 
-        List<Transaction> userTransaction = List.of(firstTransaction, secondTransaction);
+        List<Transaction> userTransactions = List.of(firstTransaction, secondTransaction);
 
-        when(transactionRepository.findAllTransactionByOwnerId(user.getId())).thenReturn(userTransaction);
+        when(transactionRepository.findAllTransactionByOwnerId(user.getId())).thenReturn(userTransactions);
 
         List<Transaction> result = transactionService.getAllUserTransactions(user.getId());
 
