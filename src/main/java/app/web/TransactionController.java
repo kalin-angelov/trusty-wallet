@@ -33,7 +33,7 @@ public class TransactionController {
     public ModelAndView getTransactionsPage (@AuthenticationPrincipal UserPrinciple userPrinciple) {
 
         User user = userService.getUserById(userPrinciple.getUser().getId());
-        List<Transaction> transactions = transactionService.allUserTransactions(user.getId());
+        List<Transaction> transactions = transactionService.getAllUserTransactions(user.getId());
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("transactions");

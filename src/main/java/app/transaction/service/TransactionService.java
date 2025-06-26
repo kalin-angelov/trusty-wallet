@@ -6,7 +6,6 @@ import app.transaction.model.TransactionType;
 import app.transaction.model.TransactionTypeStatus;
 import app.transaction.repository.TransactionRepository;
 import app.user.model.User;
-import app.wallet.model.Wallet;
 import app.web.dto.TransactionsReport;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -30,21 +28,12 @@ public class TransactionService {
         this.transactionRepository = transactionRepository;
     }
 
-    public List<Transaction> getWalletLastTransaction (Wallet wallet) {
-
-        return transactionRepository.findAllBySenderOrReceiver(wallet.getId().toString(), wallet.getId().toString())
-                .stream()
-                .filter(transaction -> transaction.getOwner().getId() == wallet.getOwner().getId())
-                .limit(3)
-                .collect(Collectors.toList());
-    }
-
-    public List<Transaction> allUserTransactions (UUID id) {
+    public List<Transaction> getAllUserTransactions(UUID id) {
 
         List<Transaction> transactions = transactionRepository.findAllTransactionByOwnerId(id);
 
         if (!transactions.isEmpty()) {
-            transactions.sort(Comparator.comparing(Transaction::getCreatedOn).reversed());
+            transactions.stream().sorted(Comparator.comparing(Transaction::getCreatedOn)).toList().reversed();
         }
 
         return transactions;
