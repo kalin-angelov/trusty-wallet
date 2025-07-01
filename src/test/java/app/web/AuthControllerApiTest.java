@@ -115,7 +115,7 @@ public class AuthControllerApiTest {
     @Test
     void postRequestToRegisterEndpointWithAlreadyExistingEmail_shouldReturnRegisterViewWithErrorMessage() throws Exception {
 
-        when(userService.register(any())).thenThrow(new EmailAlreadyExistException("Email with this username already exist."));
+        when(userService.register(any())).thenThrow(new EmailAlreadyExistException("User with this email already exist."));
 
         MockHttpServletRequestBuilder request = post("/register")
                 .formField("email", "email@gamil.com")
