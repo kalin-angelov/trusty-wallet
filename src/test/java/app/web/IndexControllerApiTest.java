@@ -7,6 +7,9 @@ import app.user.model.User;
 import app.user.model.UserPrinciple;
 import app.user.service.UserService;
 import app.wallet.service.WalletService;
+import app.web.dto.TransactionsReport;
+import app.web.dto.UsersReport;
+import app.web.dto.WalletsReport;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -77,5 +80,50 @@ public class IndexControllerApiTest {
                 .andExpect(model().attributeExists("credit"));
         verify(userService, times(1)).getUserById(userId);
         verify(creditService, times(1)).getCreditByOwnerId(userId);
+    }
+
+    @Test
+    void getRequestToReportEndpointWithAuthorizedRequest_shouldReturnReportsView() throws Exception {
+
+        UserPrinciple principle = new UserPrinciple(TestBuilder.aRandomAdmin());
+        UUID userId = principle.getUser().getId();
+
+        when(userService.getUserById(userId)).thenReturn(principle.getUser());
+        when(userService.getUsersReport()).thenReturn(TestBuilder.aRandomUserReport());
+        when(walletService.getWalletsReport()).thenReturn(TestBuilder.aRandomWalletsReport());
+        when(transactionService.getTransactionsReport()).thenReturn(TestBuilder.aRandomTransactionsReport());
+
+        MockHttpServletRequestBuilder request = get("/reports")
+                .with(user(principle));
+
+        mockMvc.perform(request)
+                .andExpect(status().is(200))
+                .andExpect(view().name("reports"))
+                .andExpect(model().attribute("user", instanceOf(User.class)))
+                .andExpect(model().attribute("usersReport", instanceOf(UsersReport.class)))
+                .andExpect(model().attribute("walletsReport", instanceOf(WalletsReport.class)))
+                .andExpect(model().attribute("transactionsReport", instanceOf(TransactionsReport.class)));
+        verify(userService, times(1)).getUserById(userId);
+        verify(userService, times(1)).getUsersReport();
+        verify(walletService, times(1)).getWalletsReport();
+        verify(transactionService, times(1)).getTransactionsReport();
+    }
+
+    @Test
+    void getRequestToReportEndpointWithUnauthorizedRequest_shouldRedirectToNotFoundView() throws Exception {
+
+        UserPrinciple principle = new UserPrinciple(TestBuilder.aRandomUser());
+        UUID userId = principle.getUser().getId();
+
+        MockHttpServletRequestBuilder request = get("/reports")
+                .with(user(principle));
+
+        mockMvc.perform(request)
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/not-found"));
+        verify(userService, never()).getUserById(userId);
+        verify(userService, never()).getUsersReport();
+        verify(walletService, never()).getWalletsReport();
+        verify(transactionService, never()).getTransactionsReport();
     }
 }
