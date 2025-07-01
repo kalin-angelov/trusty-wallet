@@ -4,9 +4,7 @@ import app.credit.model.Credit;
 import app.credit.model.CreditStatus;
 import app.user.model.User;
 import app.user.model.UserRole;
-import app.web.dto.EditRequest;
-import app.web.dto.LoginRequest;
-import app.web.dto.RegisterRequest;
+import app.web.dto.*;
 import lombok.experimental.UtilityClass;
 
 import java.math.BigDecimal;
@@ -88,7 +86,41 @@ public class TestBuilder {
                 .email("email@gmail.com")
                 .firstName("firstName")
                 .lastName("lastName")
-                .profilePic("imgUrl")
+                .profilePic("https://newImgUrl")
+                .build();
+    }
+
+    public static UsersReport aRandomUserReport() {
+
+        return UsersReport.builder()
+                .totalUsers(6)
+                .activeUser(4)
+                .inactiveUsers(2)
+                .admins(1)
+                .nonAdmins(5)
+                .createdOn(LocalDateTime.now())
+                .build();
+    }
+
+    public static TransactionsReport aRandomTransactionsReport() {
+
+        return TransactionsReport.builder()
+                .totalTransactions(6)
+                .totalTransactionAmount(new BigDecimal(100))
+                .successfulTransactions(4)
+                .unsuccessfulTransactions(2)
+                .createdOn(LocalDateTime.now())
+                .build();
+    }
+
+    public static WalletsReport aRandomWalletsReport() {
+
+        return WalletsReport.builder()
+                .totalWallets(18)
+                .totalWalletsAmount(new BigDecimal(1500))
+                .activeWallets(12)
+                .inactiveWallets(6)
+                .createdOn(LocalDateTime.now())
                 .build();
     }
 }
