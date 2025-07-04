@@ -2,6 +2,10 @@ package app;
 
 import app.credit.model.Credit;
 import app.credit.model.CreditStatus;
+import app.transaction.model.Transaction;
+import app.transaction.model.TransactionStatus;
+import app.transaction.model.TransactionType;
+import app.transaction.model.TransactionTypeStatus;
 import app.user.model.User;
 import app.user.model.UserRole;
 import app.web.dto.*;
@@ -121,6 +125,33 @@ public class TestBuilder {
                 .activeWallets(12)
                 .inactiveWallets(6)
                 .createdOn(LocalDateTime.now())
+                .build();
+    }
+
+    public static Transaction aRandomTransaction() {
+
+        return Transaction.builder()
+                .id(UUID.randomUUID())
+                .owner(aRandomUser())
+                .sender("sender")
+                .receiver("receiver")
+                .amount(new BigDecimal(50))
+                .balanceLeft(new BigDecimal(40))
+                .type(TransactionType.DEPOSIT)
+                .description("description")
+                .status(TransactionStatus.SUCCEEDED)
+                .typeStatus(TransactionTypeStatus.MAIN)
+                .failureReason(null)
+                .createdOn(LocalDateTime.now())
+                .build();
+    }
+
+    public static TransferRequest aRandomTransferRequest() {
+
+        return TransferRequest.builder()
+                .sender(UUID.randomUUID())
+                .receiver("receiver")
+                .amount(new BigDecimal(10))
                 .build();
     }
 }
