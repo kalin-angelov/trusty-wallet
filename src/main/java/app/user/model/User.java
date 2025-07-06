@@ -1,5 +1,6 @@
 package app.user.model;
 
+import app.credit.model.Credit;
 import app.wallet.model.Wallet;
 import jakarta.persistence.*;
 import jdk.jfr.BooleanFlag;
@@ -40,6 +41,9 @@ public class User {
     private String firstName;
 
     private String lastName;
+
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "owner")
+    private Credit credit;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
