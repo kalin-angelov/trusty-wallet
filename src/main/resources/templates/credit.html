@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/images/wallet-main-logo.png">
+  <link rel="stylesheet" type="text/css" href="/css/common.css">
+  <link rel="stylesheet" type="text/css" href="/css/form.css">
+  <link rel="stylesheet" type="text/css" href="/css/transfer.css">
+  <link rel="stylesheet" type="text/css" href="/css/nav-side-bar.css">
+  <title>Credit</title>
+</head>
+<body>
+<th:block th:insert="~{fragments/header :: header}"></th:block>
+<main>
+  <th:block th:insert="~{fragments/navbar :: navbar}"></th:block>
+
+  <form class="form" th:action="@{/transfers/credit}" th:method="POST" th:object="${creditRequest}">
+
+    <h3>Credit Payment</h3>
+
+    <fieldset>
+      <label for="sender">Select Wallet</label>
+      <div class="formInput">
+        <i class="fa-solid fa-wallet"></i>
+        <select id="sender" name="sender" required="" th:field="*{sender}">
+          <option value="" selected disabled="">Select your wallet</option>
+          <option th:each="wallet : ${user.wallets}" th:value="${wallet.id}" th:text="${wallet.type + ' WALLET - ' + wallet.balance + ' EUR'}"></option>
+        </select>
+      </div>
+
+    </fieldset>
+
+    <button class="button form-btn">
+      <p>Send</p>
+      <i class="fa-solid fa-paper-plane"></i>
+    </button>
+
+  </form>
+</main>
+<th:block th:insert="~{fragments/footer :: footer}"></th:block>
+</body>
+</html>
