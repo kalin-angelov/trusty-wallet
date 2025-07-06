@@ -1,5 +1,6 @@
 package app.user.service;
 
+import app.credit.model.Credit;
 import app.credit.service.CreditService;
 import app.exception.EmailAlreadyExistException;
 import app.exception.UsernameAlreadyExistException;
@@ -19,7 +20,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjuster;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -47,6 +51,10 @@ public class UserService {
         return userRepository.findAll().stream().sorted(Comparator.comparing(User::getCreatedOn)).toList();
     }
 
+    public List<User> getAllActiveUsers() {
+        return this.getAllUsers().stream().filter(User::isActive).toList();
+    }
+
     @Transactional
     @CacheEvict(value = "users", allEntries = true)
     public User register(RegisterRequest registerRequest) {
@@ -66,8 +74,9 @@ public class UserService {
 
         User user = initializeUser(registerRequest);
         List<Wallet> userWallets = walletService.createUserWallets(user);
-        creditService.createCredit(user);
+        Credit userCredit = creditService.createCredit(user);
 
+        user.setCredit(userCredit);
         user.setWallets(userWallets);
         userRepository.save(user);
         log.info("User with id [%s] and username [%s] created successfully".formatted(user.getId(), user.getUsername()));
@@ -152,5 +161,12 @@ public class UserService {
                 .nonAdmins(nonAdmins)
                 .createdOn(LocalDateTime.now())
                 .build();
+    }
+
+    public List<User> getAllUsersWithUnpaidCredit() {
+
+        LocalDate date = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
+        return getAllActiveUsers().stream().filter(user ->
+                user.getCredit().getNextPaymentOn().isEqual(date)).toList();
     }
 }
