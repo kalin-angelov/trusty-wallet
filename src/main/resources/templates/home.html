@@ -23,6 +23,8 @@
             <p th:if="${user.isActive()}" class="status active">ACTIVE</p>
             <p th:if="${!user.isActive()}" class="status inactive">INACTIVE</p>
           </div>
+        </div>
+        <div class="profile-info">
           <div class="details-container">
             <strong>User credit: </strong>
             <p class="credit" th:text="${credit.amount + ' EUR'}"></p>
@@ -32,6 +34,7 @@
             <p th:text="${credit.nextPaymentOn}"></p>
           </div>
         </div>
+        <a class="profile-button button" th:href="@{/transfers/credit}">Pay Credit</a>
 
         <div class="profile-info">
           <div class="details-container">
@@ -53,7 +56,6 @@
 
       <div class="profile-wallet container">
         <div class="wallet" th:each="wallet : ${user.wallets}">
-          <div class="wallet-details" th:if="${wallet.type.name() == 'DEFAULT'}">
             <div class="wallet-info">
               <p class="wallet-type" th:text="${wallet.type.name() + ' WALLET'}"></p>
               <p th:text="${wallet.status}" th:classappend="${wallet.status.name() == 'ACTIVE' ? 'status active' : 'status inactive'}"></p>
@@ -63,16 +65,13 @@
               <p class="available-balance">Available Balance</p>
             </div>
             <div class="details-container">
-              <strong>Wallet id: </strong>
-              <p th:text="${wallet.id}"></p>
-            </div>
-            <div class="details-container">
               <strong>Last transaction on: </strong>
               <p th:text="${#temporals.format(wallet.updatedOn, 'dd MMM YYYY HH:mm')}"></p>
             </div>
           </div>
+          <a class="profile-button button" th:href="@{/wallets}">Open Wallets</a>
         </div>
-        <a class="profile-button button" th:href="@{/wallets}">Open Wallets</a>
+
       </div>
     </div>
   </main>
