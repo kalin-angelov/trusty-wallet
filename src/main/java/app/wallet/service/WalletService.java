@@ -1,5 +1,8 @@
 package app.wallet.service;
 
+import app.credit.model.Credit;
+import app.credit.model.CreditStatus;
+import app.credit.repository.CreditRepository;
 import app.credit.service.CreditService;
 import app.exception.WalletDoNotExistException;
 import app.transaction.model.Transaction;
@@ -21,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
 @Slf4j
@@ -34,7 +38,7 @@ public class WalletService {
     private final CreditService creditService;
 
     @Autowired
-    public WalletService(WalletRepository walletRepository, TransactionService transactionService, CreditService creditService) {
+    public WalletService(WalletRepository walletRepository, TransactionService transactionService, CreditService creditService, CreditRepository creditRepository) {
         this.walletRepository = walletRepository;
         this.transactionService = transactionService;
         this.creditService = creditService;
@@ -167,6 +171,73 @@ public class WalletService {
         );
     }
 
+    @Transactional
+    public Transaction payCredit(User user, UUID walletId) {
+
+        String description = "Paying monthly credit";
+        Credit credit = creditService.getCreditByOwnerId(user.getId());
+        Wallet wallet = getWalletByIdAndOwner(walletId, user);
+        BigDecimal amount = credit.getAmount();
+
+        if (credit.getAmount().compareTo(new BigDecimal(0)) == 0) {
+            return transactionService.initializeTransaction(
+                    wallet.getOwner(),
+                    wallet.getOwner().getUsername(),
+                    "Trusty Wallet",
+                    amount,
+                    wallet.getBalance(),
+                    TransactionType.DEPOSIT,
+                    description,
+                    TransactionStatus.FAILED,
+                    TransactionTypeStatus.SECONDARY,
+                    "There are no monthly obligations");
+        }
+
+        boolean walletCanHandleTransaction = chargeWallet(wallet, amount);
+
+        if (walletCanHandleTransaction) {
+            wallet.setBalance(wallet.getBalance().subtract(amount));
+            wallet.setUpdatedOn(LocalDateTime.now());
+            walletRepository.save(wallet);
+
+            credit.setAmount(new BigDecimal(0));
+            credit.setPayedOn(LocalDateTime.now());
+            credit.setNextPaymentOn(credit.getNextPaymentOn().with(TemporalAdjusters.firstDayOfNextMonth()));
+
+            if (credit.getStatus() == CreditStatus.UNPAID) {
+                credit.setStatus(CreditStatus.PAYED);
+            }
+
+            creditService.updateCredit(credit);
+
+            return transactionService.initializeTransaction(
+                    wallet.getOwner(),
+                    wallet.getOwner().getUsername(),
+                    "Trusty Wallet",
+                    amount,
+                    wallet.getBalance(),
+                    TransactionType.DEPOSIT,
+                    description,
+                    TransactionStatus.SUCCEEDED,
+                    TransactionTypeStatus.MAIN,
+                    null
+            );
+        }
+
+        return transactionService.initializeTransaction(
+                wallet.getOwner(),
+                wallet.getOwner().getUsername(),
+                "Trusty Wallet",
+                amount,
+                wallet.getBalance(),
+                TransactionType.DEPOSIT,
+                description,
+                TransactionStatus.FAILED,
+                TransactionTypeStatus.MAIN,
+                "Invalid criteria for transaction"
+        );
+    }
+
     public boolean chargeWallet (Wallet wallet, BigDecimal amount) {
 
         boolean canHandleTransaction = true;
@@ -196,5 +267,9 @@ public class WalletService {
                 .inactiveWallets(inactiveWallets)
                 .createdOn(LocalDateTime.now())
                 .build();
+    }
+
+    public Wallet getWalletByIdAndOwner(UUID id, User user) {
+        return walletRepository.findByIdAndOwnerId(id, user.getId()).orElseThrow();
     }
 }
