@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.UUID;
 
@@ -46,22 +45,6 @@ public class CreditService {
         creditRepository.save(credit);
     }
 
-    public Credit payCredit(User user) {
-
-        Credit credit = getCreditByOwnerId(user.getId());
-
-        credit.setAmount(new BigDecimal(0));
-        credit.setPayedOn(LocalDateTime.now());
-        credit.setNextPaymentOn(credit.getNextPaymentOn().with(TemporalAdjusters.firstDayOfNextMonth()));
-
-        if (credit.getStatus() == CreditStatus.UNPAID) {
-            credit.setStatus(CreditStatus.PAYED);
-        }
-
-        creditRepository.save(credit);
-        return credit;
-    }
-
     public Credit changeCreditStatus(User user) {
         Credit credit = getCreditByOwnerId(user.getId());
 
@@ -77,5 +60,9 @@ public class CreditService {
 
     public Credit getCreditByOwnerId(UUID id) {
         return creditRepository.findByOwnerId(id).orElseThrow(() -> new RuntimeException("Credit with owner id [%s] do not exist.".formatted(id)));
+    }
+
+    public Credit updateCredit(Credit credit) {
+        return creditRepository.save(credit);
     }
 }
