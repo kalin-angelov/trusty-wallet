@@ -3,7 +3,6 @@ package app.user.model;
 import app.credit.model.Credit;
 import app.wallet.model.Wallet;
 import jakarta.persistence.*;
-import jdk.jfr.BooleanFlag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

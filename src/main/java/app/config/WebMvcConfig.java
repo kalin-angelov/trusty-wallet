@@ -22,12 +22,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         .requestMatchers("/", "/register").permitAll()
                         .anyRequest().authenticated()
                 )
-                .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint((request, response, authException) ->
-                                response.sendRedirect("/not-found"))
-                        .accessDeniedHandler((request, response, accessDeniedException) ->
-                                response.sendRedirect("/not-found"))
-                )
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/home", true)
