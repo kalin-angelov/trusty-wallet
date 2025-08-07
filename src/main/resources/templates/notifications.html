@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/images/wallet-main-logo.png">
+  <link rel="stylesheet" type="text/css" href="/css/common.css">
+  <link rel="stylesheet" type="text/css" href="/css/table.css">
+  <link rel="stylesheet" type="text/css" href="/css/home.css">
+  <link rel="stylesheet" type="text/css" href="/css/home-common.css">
+  <link rel="stylesheet" type="text/css" href="/css/nav-side-bar.css">
+  <title>Notifications</title>
+</head>
+<body>
+<th:block th:insert="~{fragments/header :: header}"></th:block>
+<main>
+  <th:block th:insert="~{fragments/navbar :: navbar}"></th:block>
+  <div class="home">
+    <div class="profile-information container">
+      <div class="profile-header">
+        <img class="profile-image" th:src="${#strings.isEmpty(user.profilePic) ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : user.profilePic}" alt="Profile avatar">
+        <h2 class="profile-name" th:text="${user.username}"></h2>
+        <div class="profile-status">
+          <p th:if="${user.isActive()}" class="status active">ACTIVE</p>
+          <p th:if="${!user.isActive()}" class="status inactive">INACTIVE</p>
+        </div>
+      </div>
+      <a class="profile-button button" th:href="@{/transfers/credit}">Pay Credit</a>
+
+      <div class="profile-info">
+        <div class="details-container">
+          <strong>Username: </strong>
+          <p th:text="${user.username}"></p>
+        </div>
+        <div class="details-container">
+          <strong>Email: </strong>
+          <p th:text="${user.email}"> </p>
+        </div>
+        <div class="details-container">
+          <strong>Joined: </strong>
+          <p th:text="${#temporals.format(user.createdOn, 'dd MMM YYYY HH:mm')}"></p>
+        </div>
+      </div>
+
+      <a th:href="@{'/users/' + ${user.id} + '/profile'}" class="profile-button button"> Edit Profile</a>
+    </div>
+
+    <div class="table-container">
+      <h2>Notification History</h2>
+      <div class="table-header">
+        <ul class="details">
+          <li>Subject</li>
+          <li>Date</li>
+          <li>Status</li>
+          <li>Type</li>
+        </ul>
+      </div>
+      <div class="table-body">
+        <ul class="information">
+          <li>-</li>
+          <li>-</li>
+          <li>-</li>
+          <li>-</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+  </div>
+</main>
+<th:block th:insert="~{fragments/footer :: footer}"></th:block>
+</body>
+</html>
