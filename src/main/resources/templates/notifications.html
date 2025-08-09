@@ -9,6 +9,7 @@
   <link rel="stylesheet" type="text/css" href="/css/home.css">
   <link rel="stylesheet" type="text/css" href="/css/home-common.css">
   <link rel="stylesheet" type="text/css" href="/css/nav-side-bar.css">
+  <link rel="stylesheet" type="text/css" href="/css/notifications.css">
   <title>Notifications</title>
 </head>
 <body>
@@ -17,32 +18,40 @@
   <th:block th:insert="~{fragments/navbar :: navbar}"></th:block>
   <div class="home">
     <div class="profile-information container">
-      <div class="profile-header">
-        <img class="profile-image" th:src="${#strings.isEmpty(user.profilePic) ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : user.profilePic}" alt="Profile avatar">
-        <h2 class="profile-name" th:text="${user.username}"></h2>
-        <div class="profile-status">
-          <p th:if="${user.isActive()}" class="status active">ACTIVE</p>
-          <p th:if="${!user.isActive()}" class="status inactive">INACTIVE</p>
-        </div>
-      </div>
-      <a class="profile-button button" th:href="@{/transfers/credit}">Pay Credit</a>
+      <h2 class="header">Notifications Settings</h2>
+      <p class="message">Current settings</p>
 
-      <div class="profile-info">
-        <div class="details-container">
-          <strong>Username: </strong>
-          <p th:text="${user.username}"></p>
-        </div>
-        <div class="details-container">
-          <strong>Email: </strong>
-          <p th:text="${user.email}"> </p>
-        </div>
-        <div class="details-container">
-          <strong>Joined: </strong>
-          <p th:text="${#temporals.format(user.createdOn, 'dd MMM YYYY HH:mm')}"></p>
-        </div>
+      <div class="notification-container">
+        <strong>Notification status: </strong>
+        <p th:if="${user.isActive()}" class="status active">ACTIVE</p>
+        <p th:if="${!user.isActive()}" class="status inactive">INACTIVE</p>
+        <form th:action="@{'/users/' + ${user.id} + '/profile'}" th:method="PUT">
+          <label class="switch">
+            <input type="checkbox" onchange="this.form.submit()" th:checked="${user.isActive()}">
+            <span class="slider round"></span>
+          </label>
+        </form>
       </div>
 
-      <a th:href="@{'/users/' + ${user.id} + '/profile'}" class="profile-button button"> Edit Profile</a>
+      <div class="notification-container">
+        <strong>Notification type: </strong>
+        <p>Email</p>
+      </div>
+
+      <div class="notification-container">
+        <strong>Source: </strong>
+        <p th:text="${user.email}"></p>
+      </div>
+
+      <div class="general-actions">
+        <a th:href="@{'/users/' + ${user.id} + '/profile'}" class="profile-button button"> Edit Mail</a>
+
+        <form th:action="@{/notifications}" th:method="DELETE">
+          <button class="profile-button delete">
+            Clear History
+          </button>
+        </form>
+      </div>
     </div>
 
     <div class="table-container">
