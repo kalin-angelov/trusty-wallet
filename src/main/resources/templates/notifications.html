@@ -23,11 +23,11 @@
 
       <div class="notification-container">
         <strong>Notification status: </strong>
-        <p th:if="${user.isActive()}" class="status active">ACTIVE</p>
-        <p th:if="${!user.isActive()}" class="status inactive">INACTIVE</p>
+        <p th:if="${notificationSetting.enabled}" class="status active">ACTIVE</p>
+        <p th:unless="${notificationSetting.enabled}" class="status inactive">INACTIVE</p>
         <form th:action="@{'/users/' + ${user.id} + '/profile'}" th:method="PUT">
           <label class="switch">
-            <input type="checkbox" onchange="this.form.submit()" th:checked="${user.isActive()}">
+            <input type="checkbox" onchange="this.form.submit()" th:checked="${notificationSetting.enabled}">
             <span class="slider round"></span>
           </label>
         </form>
@@ -35,12 +35,12 @@
 
       <div class="notification-container">
         <strong>Notification type: </strong>
-        <p>Email</p>
+        <p th:text="${notificationSetting.type}"></p>
       </div>
 
       <div class="notification-container">
         <strong>Source: </strong>
-        <p th:text="${user.email}"></p>
+        <p th:text="${#strings.isEmpty(notificationSetting.contactInfo) ? 'Add email to resave notifications' : notificationSetting.contactInfo}"></p>
       </div>
 
       <div class="general-actions">
