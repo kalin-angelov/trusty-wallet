@@ -2,6 +2,7 @@ package app.user.service;
 
 import app.credit.model.Credit;
 import app.credit.service.CreditService;
+import app.email.service.EmailService;
 import app.exception.EmailAlreadyExistException;
 import app.exception.UsernameAlreadyExistException;
 import app.user.model.User;
@@ -36,13 +37,15 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final WalletService walletService;
     private final CreditService creditService;
+    private final EmailService emailService;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, WalletService walletService, CreditService creditService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, WalletService walletService, CreditService creditService, EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.walletService = walletService;
         this.creditService = creditService;
+        this.emailService = emailService;
     }
 
     @Cacheable("users")
@@ -78,6 +81,7 @@ public class UserService {
         user.setCredit(userCredit);
         user.setWallets(userWallets);
         userRepository.save(user);
+        emailService.saveNotificationSetting(user.getId(), false, user.getEmail());
         log.info("User with id [%s] and username [%s] created successfully".formatted(user.getId(), user.getUsername()));
         return user;
     }
