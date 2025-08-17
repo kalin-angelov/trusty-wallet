@@ -1,5 +1,7 @@
 package app.web;
 
+import app.email.client.dto.NotificationPreferenceResponse;
+import app.email.service.EmailService;
 import app.user.model.User;
 import app.user.model.UserPrinciple;
 import app.user.service.UserService;
@@ -17,6 +19,9 @@ public class NotificationController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private EmailService emailService;
+
     @GetMapping
     public ModelAndView getNotificationView(@AuthenticationPrincipal UserPrinciple userPrinciple) {
 
@@ -24,8 +29,10 @@ public class NotificationController {
 
         User user = userService.getUserById(userPrinciple.getUser().getId());
 
+        NotificationPreferenceResponse notificationSetting = emailService.getNotificationSettings(user.getId());
         modelAndView.setViewName("notifications");
         modelAndView.addObject("user", user);
+        modelAndView.addObject("notificationSetting", notificationSetting);
 
         return modelAndView;
     }
