@@ -44,4 +44,14 @@ public class EmailService {
 
        return httpResponse.getBody();
     }
+
+    public void changeNotificationSetting(UUID userId, boolean enabled) {
+
+        ResponseEntity<NotificationPreferenceResponse> httpResponse = notificationClient.changeSendingSetting(userId, enabled);
+
+        if (!httpResponse.getStatusCode().is2xxSuccessful()) {
+            log.error("[Feign call to notification-sender-app failed] Can't make changes on notification setting with user ID - [%s].".formatted(userId));
+        }
+
+    }
 }
