@@ -1,5 +1,6 @@
 package app.web;
 
+import app.email.client.dto.Notification;
 import app.email.client.dto.NotificationPreferenceResponse;
 import app.email.service.EmailService;
 import app.user.model.User;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -32,11 +34,13 @@ public class NotificationController {
         ModelAndView modelAndView = new ModelAndView();
 
         User user = userService.getUserById(userPrinciple.getUser().getId());
+        List<Notification> notificationsHistory = emailService.getNotificationHistory(user.getId());
 
         NotificationPreferenceResponse notificationSetting = emailService.getNotificationSettings(user.getId());
         modelAndView.setViewName("notifications");
         modelAndView.addObject("user", user);
         modelAndView.addObject("notificationSetting", notificationSetting);
+        modelAndView.addObject("notificationsHistory", notificationsHistory);
 
         return modelAndView;
     }
