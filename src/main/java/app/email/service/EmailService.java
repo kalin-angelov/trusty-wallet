@@ -1,13 +1,16 @@
 package app.email.service;
 
 import app.email.client.NotificationClient;
+import app.email.client.dto.Notification;
 import app.email.client.dto.NotificationPreferenceRequest;
 import app.email.client.dto.NotificationPreferenceResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -32,7 +35,7 @@ public class EmailService {
         if (!httpResponse.getStatusCode().is2xxSuccessful()) {
             log.error("[Feign call to notification-sender-app failed] Can't save notification settings for user with id - [%s]".formatted(userId));
         }
-     }
+    }
 
     public NotificationPreferenceResponse getNotificationSettings(UUID userId) {
 
@@ -53,5 +56,12 @@ public class EmailService {
             log.error("[Feign call to notification-sender-app failed] Can't make changes on notification setting with user ID - [%s].".formatted(userId));
         }
 
+    }
+
+    public List<Notification> getNotificationHistory(UUID userId) {
+
+        ResponseEntity<List<Notification>> httpResponse = notificationClient.getNotificationHistory(userId);
+
+        return httpResponse.getBody();
     }
 }
