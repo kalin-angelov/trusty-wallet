@@ -1,11 +1,13 @@
 package app.email.client;
 
+import app.email.client.dto.Notification;
 import app.email.client.dto.NotificationPreferenceRequest;
 import app.email.client.dto.NotificationPreferenceResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @FeignClient(name = "notification-sender-app", url = "http://localhost:8081/api/v1/notifications")
@@ -16,6 +18,9 @@ public interface NotificationClient {
 
     @GetMapping("/preferences")
     ResponseEntity<NotificationPreferenceResponse> getUserNotificationSetting(@RequestParam(name = "userId") UUID userId);
+
+    @GetMapping
+    ResponseEntity<List<Notification>> getNotificationHistory(@RequestParam(name = "userId") UUID userId);
 
     @PutMapping("/preferences")
     ResponseEntity<NotificationPreferenceResponse> changeSendingSetting(@RequestParam(name = "userId") UUID userId, @RequestParam(name = "enabled") boolean enabled);
