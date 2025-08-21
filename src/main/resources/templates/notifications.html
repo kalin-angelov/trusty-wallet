@@ -64,7 +64,7 @@
           <li>Type</li>
         </ul>
       </div>
-      <div class="table-body">
+      <div class="table-body" th:if="${#lists.isEmpty(notificationsHistory)}">
         <ul class="information">
           <li>-</li>
           <li>-</li>
